@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
+import Showcase from '../components/ui/Showcase';
 
 export const WelcomePage = () => {
   const plannedModules = [
@@ -135,6 +136,16 @@ export const WelcomePage = () => {
             Explore Planned Modules
           </Button>
           <Button
+            variant="secondary"
+            size="md"
+            onClick={() => {
+              const el = document.getElementById('design-system-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            UI Design System Showcase
+          </Button>
+          <Button
             variant="outline"
             size="md"
             onClick={() => {
@@ -145,6 +156,11 @@ export const WelcomePage = () => {
             Team Contribution Guide
           </Button>
         </div>
+      </section>
+
+      {/* Reusable UI Design System Showcase (Member 2) */}
+      <section id="design-system-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Showcase />
       </section>
 
       {/* Planned Modules Grid */}

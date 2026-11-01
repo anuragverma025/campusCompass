@@ -19,3 +19,4 @@ export { Select } from './Select';
 export { Modal } from './Modal';
 export { Tabs } from './Tabs';
 export { Dropdown } from './Dropdown';
+export { Showcase } from './Showcase';

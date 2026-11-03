@@ -6,6 +6,8 @@ import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import TasksPage from '../features/tasks/TasksPage';
 import PlacementPage from '../pages/PlacementPage';
+import CalendarPage from '../pages/CalendarPage';
+import OpportunitiesPage from '../pages/OpportunitiesPage';
 
 /**
  * Main application routing configuration.
@@ -17,10 +19,10 @@ export const AppRoutes = () => {
       <Route element={<AppLayout />}>
         <Route index element={<PagePlaceholder title="Dashboard" />} />
         <Route path="tasks" element={<TasksPage />} />
-        <Route path="calendar" element={<PagePlaceholder title="Calendar" />} />
+        <Route path="calendar" element={<CalendarPage />} />
         <Route
           path="opportunities"
-          element={<PagePlaceholder title="Opportunities" />}
+          element={<OpportunitiesPage />}
         />
         <Route
           path="placement"

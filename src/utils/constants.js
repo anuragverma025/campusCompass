@@ -15,5 +15,6 @@ export const STORAGE_KEYS = {
   PREFERENCES: 'campus_compass_preferences',
   THEME: 'campus_compass_theme',
   PLACEMENTS: 'campusCompass_placementApplications',
+  CALENDAR_EVENTS: 'campusCompass_calendarEvents',
+  OPPORTUNITIES: 'campusCompass_opportunities',
 };
-

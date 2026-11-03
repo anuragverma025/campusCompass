@@ -5,6 +5,7 @@ import PagePlaceholder from '../pages/PagePlaceholder';
 import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import TasksPage from '../features/tasks/TasksPage';
+import PlacementPage from '../pages/PlacementPage';
 
 /**
  * Main application routing configuration.
@@ -23,7 +24,7 @@ export const AppRoutes = () => {
         />
         <Route
           path="placement"
-          element={<PagePlaceholder title="Placement Tracker" />}
+          element={<PlacementPage />}
         />
         <Route path="welcome" element={<WelcomePage />} />
         <Route path="*" element={<NotFoundPage />} />

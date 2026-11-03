@@ -64,6 +64,7 @@ To maintain strict project clarity, the table below delineates what is currently
 | **Component Showcase** | `src/pages/WelcomePage.jsx` | **Complete** | Interactive demonstration page accessible via `/welcome` showcasing all UI components and states. |
 | **404 Not Found Page** | `src/pages/NotFoundPage.jsx` | **Complete** | Accessible error boundary screen with navigation fallback to home. |
 | **Storage Abstraction** | `src/utils/storage.js` | **Complete** | Defensive wrapper around browser `localStorage` with JSON serialization and try/catch fallbacks. |
+| **Tasks & Deadline Tracker** | `src/features/tasks/` | **Complete** | Academic task tracking, lab submissions, priority badges, category filtering, search, and local persistence. |
 | **Automated QA Smoke Suite** | `scripts/qa-check.mjs` | **Complete** | Headless SSR check verifying that every registered route renders and all UI components export correctly (`npm test`). |
 
 ### ⏳ Placeholder & Planned Modules (Phase 2+)
@@ -71,7 +72,7 @@ To maintain strict project clarity, the table below delineates what is currently
 | Module | Route | Placeholder Component | Planned Capabilities |
 | :--- | :--- | :--- | :--- |
 | **Dashboard** | `/` | `PagePlaceholder` ("Dashboard") | Daily summary widgets, upcoming deadline countdowns, quick action triggers, productivity streak indicators. |
-| **Tasks & Deadlines** | `/tasks` | `PagePlaceholder` ("Tasks") | Academic deadline tracking, lab submission checklists, exam alerts, course-wise filtering, priority flags. |
+
 | **Smart Calendar** | `/calendar` | `PagePlaceholder` ("Calendar") | Weekly timetable grid, recurring class slots, club meeting schedules, exam time blocks. |
 | **Opportunity Radar** | `/opportunities` | `PagePlaceholder` ("Opportunities") | Internship tracker, competitive hackathons, scholarships, application deadline reminders. |
 | **Placement Prep** | `/placement` | `PagePlaceholder` ("Placement Tracker") | DSA problem-solving log (LeetCode/Striver), topic-wise revision progress, interview notes. |

@@ -7,15 +7,18 @@ import {
 } from '../features/placement/utils/constants';
 import ApplicationList from '../features/placement/components/ApplicationList';
 import ApplicationFormModal from '../features/placement/components/ApplicationFormModal';
+import DeleteConfirmModal from '../features/placement/components/DeleteConfirmModal';
 
 /**
  * PlacementPage — Placement Tracker landing page.
  * Displays application pipeline overview, status summaries, application cards,
- * and allows adding new applications.
+ * and handles adding, editing, and deleting applications.
  */
 const PlacementPage = () => {
   const [applications, setApplications] = useState(SAMPLE_APPLICATIONS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingApplication, setEditingApplication] = useState(null);
+  const [deletingApplication, setDeletingApplication] = useState(null);
 
   // Handle adding a new application
   const handleAddApplication = (newAppData) => {
@@ -28,6 +31,42 @@ const PlacementPage = () => {
     };
 
     setApplications((prev) => [newApplication, ...prev]);
+  };
+
+  // Handle saving an edited application
+  const handleSaveEdit = (updatedData) => {
+    if (!editingApplication) return;
+
+    setApplications((prev) =>
+      prev.map((app) =>
+        app.id === editingApplication.id
+          ? {
+              ...app,
+              ...updatedData,
+              updatedAt: new Date().toISOString(),
+            }
+          : app
+      )
+    );
+
+    setEditingApplication(null);
+  };
+
+  // Handle delete trigger and confirmation
+  const handleDeleteClick = (appId) => {
+    const appToDelete = applications.find((app) => app.id === appId);
+    if (appToDelete) {
+      setDeletingApplication(appToDelete);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (deletingApplication) {
+      setApplications((prev) =>
+        prev.filter((app) => app.id !== deletingApplication.id)
+      );
+      setDeletingApplication(null);
+    }
   };
 
   // Calculate counts per status
@@ -132,6 +171,8 @@ const PlacementPage = () => {
       {/* Application Listing */}
       <ApplicationList
         applications={applications}
+        onEdit={(app) => setEditingApplication(app)}
+        onDelete={handleDeleteClick}
         emptyState={renderEmptyState()}
       />
 
@@ -140,6 +181,22 @@ const PlacementPage = () => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onSubmit={handleAddApplication}
+      />
+
+      {/* Edit Application Modal */}
+      <ApplicationFormModal
+        isOpen={Boolean(editingApplication)}
+        initialData={editingApplication}
+        onClose={() => setEditingApplication(null)}
+        onSubmit={handleSaveEdit}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={Boolean(deletingApplication)}
+        application={deletingApplication}
+        onClose={() => setDeletingApplication(null)}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import AppLayout from '../components/layout/AppLayout';
 import PagePlaceholder from '../pages/PagePlaceholder';
 import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
+import TasksPage from '../features/tasks/TasksPage';
 
 /**
  * Main application routing configuration.
@@ -14,7 +15,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<PagePlaceholder title="Dashboard" />} />
-        <Route path="tasks" element={<PagePlaceholder title="Tasks" />} />
+        <Route path="tasks" element={<TasksPage />} />
         <Route path="calendar" element={<PagePlaceholder title="Calendar" />} />
         <Route
           path="opportunities"

@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
+import PlacementPage from '../pages/PlacementPage';
 
 /**
  * Main application routing configuration.
@@ -15,8 +16,8 @@ export const AppRoutes = () => {
           <Route path="/planner/*" element={<PlannerPage />} />
           <Route path="/calendar/*" element={<CalendarPage />} />
           <Route path="/opportunities/*" element={<OpportunitiesPage />} />
-          <Route path="/placement/*" element={<PlacementPage />} />
       */}
+      <Route path="/placement" element={<PlacementPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

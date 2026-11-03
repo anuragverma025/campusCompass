@@ -19,10 +19,13 @@ export const ApplicationFormModal = ({
 }) => {
   const isEditing = Boolean(initialData);
 
+  const getTodayDate = () => new Date().toISOString().split('T')[0];
+
   const [formData, setFormData] = useState({
     company: '',
     role: '',
     status: 'Applied',
+    applicationDate: getTodayDate(),
     deadline: '',
     applicationLink: '',
     notes: '',
@@ -38,6 +41,7 @@ export const ApplicationFormModal = ({
           company: initialData.company || '',
           role: initialData.role || '',
           status: initialData.status || 'Applied',
+          applicationDate: initialData.applicationDate || (initialData.createdAt ? initialData.createdAt.split('T')[0] : getTodayDate()),
           deadline: initialData.deadline || '',
           applicationLink: initialData.applicationLink || '',
           notes: initialData.notes || '',
@@ -47,6 +51,7 @@ export const ApplicationFormModal = ({
           company: '',
           role: '',
           status: 'Applied',
+          applicationDate: getTodayDate(),
           deadline: '',
           applicationLink: '',
           notes: '',
@@ -105,6 +110,7 @@ export const ApplicationFormModal = ({
       ...formData,
       company: formData.company.trim(),
       role: formData.role.trim(),
+      applicationDate: formData.applicationDate || getTodayDate(),
       deadline: formData.deadline.trim(),
       applicationLink: formData.applicationLink.trim(),
       notes: formData.notes.trim(),
@@ -163,8 +169,8 @@ export const ApplicationFormModal = ({
           />
         </div>
 
-        {/* Status & Deadline */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Status, Application Date, & Deadline */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Select
             label="Application Status"
             options={statusOptions}
@@ -175,11 +181,19 @@ export const ApplicationFormModal = ({
           />
 
           <Input
-            label="Application Deadline"
+            label="Application Date"
+            type="date"
+            value={formData.applicationDate}
+            onChange={(e) => handleChange('applicationDate', e.target.value)}
+            helperText="Date you applied or added this"
+          />
+
+          <Input
+            label="Deadline (Optional)"
             type="date"
             value={formData.deadline}
             onChange={(e) => handleChange('deadline', e.target.value)}
-            helperText="Optional submission cutoff or next round date"
+            helperText="Cutoff or next round date"
           />
         </div>
 
@@ -210,4 +224,3 @@ export const ApplicationFormModal = ({
 };
 
 export default ApplicationFormModal;
-

@@ -6,13 +6,29 @@ import {
   SAMPLE_APPLICATIONS,
 } from '../features/placement/utils/constants';
 import ApplicationList from '../features/placement/components/ApplicationList';
+import ApplicationFormModal from '../features/placement/components/ApplicationFormModal';
 
 /**
  * PlacementPage — Placement Tracker landing page.
- * Displays application pipeline overview, status summaries, and application cards.
+ * Displays application pipeline overview, status summaries, application cards,
+ * and allows adding new applications.
  */
 const PlacementPage = () => {
-  const [applications] = useState(SAMPLE_APPLICATIONS);
+  const [applications, setApplications] = useState(SAMPLE_APPLICATIONS);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Handle adding a new application
+  const handleAddApplication = (newAppData) => {
+    const now = new Date().toISOString();
+    const newApplication = {
+      ...newAppData,
+      id: `app-${Date.now()}`,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    setApplications((prev) => [newApplication, ...prev]);
+  };
 
   // Calculate counts per status
   const statusCounts = APPLICATION_STATUSES.reduce((acc, status) => {
@@ -45,6 +61,14 @@ const PlacementPage = () => {
           Start tracking your placement journey by adding your first
           application. Your data is saved locally in your browser.
         </p>
+        <Button
+          variant="primary"
+          size="sm"
+          className="mt-2"
+          onClick={() => setIsAddModalOpen(true)}
+        >
+          Add Your First Application
+        </Button>
       </div>
     </Card>
   );
@@ -69,6 +93,7 @@ const PlacementPage = () => {
 
         <Button
           variant="primary"
+          onClick={() => setIsAddModalOpen(true)}
           leftIcon={
             <svg
               className="w-4 h-4"
@@ -108,6 +133,13 @@ const PlacementPage = () => {
       <ApplicationList
         applications={applications}
         emptyState={renderEmptyState()}
+      />
+
+      {/* Add Application Modal */}
+      <ApplicationFormModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={handleAddApplication}
       />
     </div>
   );

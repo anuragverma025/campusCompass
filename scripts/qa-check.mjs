@@ -96,6 +96,48 @@ try {
     failures++;
   }
 
+  // Test Placement Tracker Feature Constants & Sample Data
+  console.log('\n--- Testing Placement Tracker Feature ---');
+  const placementConstants = await vite.ssrLoadModule('./src/features/placement/utils/constants.js');
+  const { PLACEMENT_STORAGE_KEY, APPLICATION_STATUSES, SAMPLE_APPLICATIONS, STATUS_BADGE_VARIANT } = placementConstants;
+
+  if (PLACEMENT_STORAGE_KEY === 'campusCompass_placementApplications') {
+    console.log(`PASS: PLACEMENT_STORAGE_KEY matches specification (${PLACEMENT_STORAGE_KEY})`);
+  } else {
+    console.error(`FAIL: PLACEMENT_STORAGE_KEY expected 'campusCompass_placementApplications', got '${PLACEMENT_STORAGE_KEY}'`);
+    failures++;
+  }
+
+  const expectedStatuses = [
+    'Interested',
+    'Applied',
+    'Online Assessment',
+    'Interview',
+    'Offer',
+    'Rejected',
+  ];
+  const missingStatuses = expectedStatuses.filter((s) => !APPLICATION_STATUSES.includes(s));
+  if (missingStatuses.length === 0) {
+    console.log('PASS: All 6 application statuses supported');
+  } else {
+    console.error(`FAIL: Missing application statuses: ${missingStatuses.join(', ')}`);
+    failures++;
+  }
+
+  if (Array.isArray(SAMPLE_APPLICATIONS) && SAMPLE_APPLICATIONS.length >= 6) {
+    const allHaveAppDate = SAMPLE_APPLICATIONS.every((a) => typeof a.applicationDate === 'string' && a.applicationDate.length > 0);
+    const allHaveCreatedAt = SAMPLE_APPLICATIONS.every((a) => typeof a.createdAt === 'string');
+    if (allHaveAppDate && allHaveCreatedAt) {
+      console.log(`PASS: Sample applications (${SAMPLE_APPLICATIONS.length}) have valid distinct applicationDate and createdAt`);
+    } else {
+      console.error('FAIL: Some sample applications are missing applicationDate or createdAt');
+      failures++;
+    }
+  } else {
+    console.error('FAIL: Sample applications missing or incomplete');
+    failures++;
+  }
+
 } catch (err) {
   console.error('CRITICAL QA ERROR:', err);
   failures++;

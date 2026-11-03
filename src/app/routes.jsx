@@ -1,27 +1,36 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import AppLayout from '../components/layout/AppLayout';
+import PagePlaceholder from '../pages/PagePlaceholder';
 import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
+import TasksPage from '../features/tasks/TasksPage';
 import PlacementPage from '../pages/PlacementPage';
 
 /**
  * Main application routing configuration.
- * Configured with React Router for Phase 1 and prepared for future feature routes.
+ * Feature pages render inside the shared application shell.
  */
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<WelcomePage />} />
-      {/* Future routes will be plugged here by feature owners:
-          <Route path="/planner/*" element={<PlannerPage />} />
-          <Route path="/calendar/*" element={<CalendarPage />} />
-          <Route path="/opportunities/*" element={<OpportunitiesPage />} />
-      */}
-      <Route path="/placement" element={<PlacementPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route element={<AppLayout />}>
+        <Route index element={<PagePlaceholder title="Dashboard" />} />
+        <Route path="tasks" element={<TasksPage />} />
+        <Route path="calendar" element={<PagePlaceholder title="Calendar" />} />
+        <Route
+          path="opportunities"
+          element={<PagePlaceholder title="Opportunities" />}
+        />
+        <Route
+          path="placement"
+          element={<PlacementPage />}
+        />
+        <Route path="welcome" element={<WelcomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
     </Routes>
   );
 };
 
 export default AppRoutes;
-

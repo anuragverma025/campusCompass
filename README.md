@@ -5,72 +5,89 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![React Router](https://img.shields.io/badge/React_Router-v6-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![QA Smoke Tests](https://img.shields.io/badge/QA_Smoke_Tests-Passing-15803D)](scripts/qa-check.mjs)
 
-**Campus Compass** is an open-source, frontend-first student productivity web application designed to help college students streamline academic commitments, daily schedules, career opportunities, and placement preparation within a single unified platform.
+**Campus Compass** is an open-source, frontend-first student productivity web application designed to help college students streamline academic commitments, daily schedules, career opportunities, and placement preparation within a single unified workspace.
 
 ---
 
 ## 📖 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [Key Planned Modules](#-key-planned-modules)
+- [Implementation Status: Implemented vs. Planned](#-implementation-status-implemented-vs-planned)
+  - [Implemented Functionality](#-implemented-functionality)
+  - [Placeholder & Planned Modules (Phase 2+)](#-placeholder--planned-modules-phase-2)
 - [Technology Stack](#-technology-stack)
-- [Phase 1 Implementation Status](#-phase-1-implementation-status)
 - [Project Architecture & Directory Structure](#-project-architecture--directory-structure)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Development Server](#development-server)
-  - [Production Build](#production-build)
-- [Team Work Allocation & Collaboration](#-team-work-allocation--collaboration)
-- [Quality & Testing Checklist](#-quality--testing-checklist)
-- [Contributing Guidelines](#-contributing-guidelines)
+  - [Installation & Setup](#installation--setup)
+- [Available Scripts](#-available-scripts)
+- [Team Work Allocation & Contribution Areas](#-team-work-allocation--contribution-areas)
+- [Team Testing Checklist](#-team-testing-checklist)
+  - [Automated Smoke Tests](#1-automated-smoke-test-routine)
+  - [Manual Cross-Device Checklist](#2-manual-verification-matrix)
+- [Bug Report Template](#-bug-report-template)
+- [Team Handoff Guide](#-team-handoff-guide)
+  - [Quick-Start for Teammates](#quick-start-for-teammates)
+  - [Validating Changes Before Submitting PRs](#validating-changes-before-submitting-prs)
+  - [Known Issues & Current Limitations](#known-issues--current-limitations)
 - [License](#-license)
 
 ---
 
 ## 🎯 Project Overview
 
-College students routinely juggle assignments across multiple portals, clash course schedules with club events, miss internship deadlines, and struggle to systematically track DSA placement preparations. 
+College students routinely juggle assignments across disparate portals, face clashes between course schedules and club events, miss internship application deadlines, and struggle to systematically track DSA placement preparations.
 
 Campus Compass resolves this fragmentation with a local-first, zero-backend, client-side web application that provides:
-- **Zero backend or database requirement**: Uses browser `localStorage` for responsive, private, and offline-capable data storage.
-- **Modern, responsive UI**: Built with accessible component patterns and modern Tailwind styling.
-- **Modular feature structure**: Designed for clean, conflict-free collaborative team engineering.
+- **Zero backend or database requirement**: Uses browser `localStorage` (via a safe abstraction wrapper `src/utils/storage.js`) for private, instantaneous, and offline-capable data persistence.
+- **Modern, responsive UI & Design System**: Custom Tailwind CSS design tokens and reusable atomic components tailored for student SaaS productivity.
+- **Responsive App Shell**: Collapsible sidebar, mobile slide-over drawer, sticky header with dynamic breadcrumbs, and accessible skip-links.
+- **Modular feature structure**: Organized for clean, conflict-free collaborative team engineering across 4 student developer ownership boundaries.
 
 ---
 
-## 🚀 Key Planned Modules
+## 📊 Implementation Status: Implemented vs. Planned
 
-1. **Academic & Deadline Tracker (`features/planner/`)**: Semester assignment tracking, lab report deadlines, exam countdowns, priority sorting, and submission indicators.
-2. **Daily Schedule & Smart Calendar (`features/calendar/`)**: Weekly class schedules, recurring lectures, club meetings, and time blocks.
-3. **Opportunity Radar (`features/opportunities/`)**: Curated tracking for internships, scholarships, hackathons, and technical campus drives.
-4. **DSA & Placement Prep Hub (`features/placement/`)**: Problem-solving logs (LeetCode / Striver sheets), category-wise revision status, and company interview notes.
-5. **Goals & Progress Analytics (`features/dashboard/`)**: Weekly productivity charts, habit consistency rings, and academic milestone visualizers.
+To maintain strict project clarity, the table below delineates what is currently built and functioning versus what is structured as placeholder or planned for upcoming sprints:
+
+### ✅ Implemented Functionality
+
+| Layer / Feature | Location | Status | Details |
+| :--- | :--- | :--- | :--- |
+| **Project Foundation & Build** | `package.json`, `vite.config.js` | **Complete** | React 18 + Vite 6 + Tailwind CSS v4 pipeline with zero-config ES modules. |
+| **Client-Side Routing** | `src/app/routes.jsx` | **Complete** | Multi-route tree (`/`, `/tasks`, `/calendar`, `/opportunities`, `/placement`, `/welcome`, `/*`). |
+| **Design System & Tokens** | `src/styles/index.css` | **Complete** | Color palettes (indigo/teal), typography tokens, radius scales, shadow presets, and CSS variables. |
+| **Reusable UI Primitives** | `src/components/ui/` | **Complete** | Fully styled, accessible components: `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Select`, `Modal`, `Tabs`, `Dropdown`, `Showcase`. |
+| **Application Shell** | `src/components/layout/` | **Complete** | Responsive layout (`AppLayout.jsx`), sticky Header with breadcrumb (`Header.jsx`), collapsible/mobile drawer Sidebar (`Sidebar.jsx`), and Footer (`Footer.jsx`). |
+| **Component Showcase** | `src/pages/WelcomePage.jsx` | **Complete** | Interactive demonstration page accessible via `/welcome` showcasing all UI components and states. |
+| **404 Not Found Page** | `src/pages/NotFoundPage.jsx` | **Complete** | Accessible error boundary screen with navigation fallback to home. |
+| **Storage Abstraction** | `src/utils/storage.js` | **Complete** | Defensive wrapper around browser `localStorage` with JSON serialization and try/catch fallbacks. |
+| **Tasks & Deadline Tracker** | `src/features/tasks/` | **Complete** | Academic task tracking, lab submissions, priority badges, category filtering, search, and local persistence. |
+| **Automated QA Smoke Suite** | `scripts/qa-check.mjs` | **Complete** | Headless SSR check verifying that every registered route renders and all UI components export correctly (`npm test`). |
+
+### ⏳ Placeholder & Planned Modules (Phase 2+)
+
+| Module | Route | Placeholder Component | Planned Capabilities |
+| :--- | :--- | :--- | :--- |
+| **Dashboard** | `/` | `PagePlaceholder` ("Dashboard") | Daily summary widgets, upcoming deadline countdowns, quick action triggers, productivity streak indicators. |
+
+| **Smart Calendar** | `/calendar` | `PagePlaceholder` ("Calendar") | Weekly timetable grid, recurring class slots, club meeting schedules, exam time blocks. |
+| **Opportunity Radar** | `/opportunities` | `PagePlaceholder` ("Opportunities") | Internship tracker, competitive hackathons, scholarships, application deadline reminders. |
+| **Placement Prep** | `/placement` | `PagePlaceholder` ("Placement Tracker") | DSA problem-solving log (LeetCode/Striver), topic-wise revision progress, interview notes. |
 
 ---
 
 ## 🛠 Technology Stack
 
-- **Core Framework**: [React 18](https://react.dev/) (Component-based UI)
-- **Build Tool & Dev Server**: [Vite 6](https://vitejs.dev/) (Blazing fast HMR and optimized bundling)
-- **Client-Side Routing**: [React Router DOM v6](https://reactrouter.com/) (Declarative multi-page routing)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with `@tailwindcss/vite`
-- **Persistence**: Browser `localStorage` (via custom abstraction wrapper `src/utils/storage.js`)
-- **Code Language**: JavaScript (ES2022+ / JSX)
-
----
-
-## 📌 Phase 1 Implementation Status
-
-- [x] **Project Scaffolding**: React + Vite initialized with ES modules and clean configuration.
-- [x] **Routing Setup**: React Router configured with root (`/`) and fallback (`*`) routes.
-- [x] **Styling Architecture**: Tailwind CSS integration configured with base styles and custom variables.
-- [x] **Scalable Folder Structure**: Clean segregation (`components/ui`, `components/layout`, `pages`, `features`, `utils`, `styles`).
-- [x] **Initial Application Screen**: Responsive welcome and architecture showcase screen with modular previews.
-- [x] **Team Ownership Matrix**: Detailed allocation in [`docs/TEAM_WORK.md`](docs/TEAM_WORK.md).
-- [x] **Quality & Testing Checklist**: Complete verification guide in [`docs/TESTING_CHECKLIST.md`](docs/TESTING_CHECKLIST.md).
-- [x] **Build Verification**: Verified production bundle generation via `npm run build`.
+- **Core UI Framework**: [React 18.3](https://react.dev/) (Component-based architecture)
+- **Bundler & Dev Server**: [Vite 6.0](https://vitejs.dev/) (Instant HMR and fast production bundling)
+- **Routing Engine**: [React Router DOM v6.28](https://reactrouter.com/) (Declarative SPA routing with nested layouts)
+- **Styling Architecture**: [Tailwind CSS v4.0](https://tailwindcss.com/) with `@tailwindcss/vite`
+- **Data Persistence**: Browser `localStorage` (via custom safe wrapper `src/utils/storage.js`)
+- **Language**: JavaScript (ES2022+ / JSX)
+- **QA Verification**: Custom headless Node/Vite smoke suite (`scripts/qa-check.mjs`)
 
 ---
 
@@ -78,36 +95,51 @@ Campus Compass resolves this fragmentation with a local-first, zero-backend, cli
 
 ```text
 campusCompass/
-├── docs/                           # Team coordination and quality assurance docs
+├── docs/                           # Team collaboration & testing protocols
 │   ├── TEAM_WORK.md                # 4-member roles, file ownership, and Git workflows
-│   └── TESTING_CHECKLIST.md        # Manual test protocols and verification logs
-├── public/                         # Public static assets (favicon, manifest)
+│   └── TESTING_CHECKLIST.md        # Comprehensive manual & automated QA testing log
+├── public/                         # Static assets (favicons, manifest)
+│   └── vite.svg
+├── scripts/                        # Quality assurance and release scripts
+│   └── qa-check.mjs                # Automated route & component smoke verification
 ├── src/
-│   ├── app/                        # Application bootstrap and routing core
-│   │   ├── App.jsx                 # App layout wrapper with Header, Routes, and Footer
-│   │   └── routes.jsx              # React Router route registry
-│   ├── assets/                     # Media assets and vector graphics
+│   ├── app/                        # Application routing core & wrappers
+│   │   ├── App.jsx                 # Root provider & BrowserRouter wrapper
+│   │   └── routes.jsx              # Application route definitions & layout wrapping
+│   ├── assets/                     # Media assets & SVG graphics
+│   │   └── compass.svg
 │   ├── components/                 # Shared presentation components
-│   │   ├── layout/                 # Shell elements (Header, Footer, Sidebar)
-│   │   │   ├── Header.jsx
-│   │   │   └── Footer.jsx
-│   │   └── ui/                     # Atomic reusable UI components
-│   │       ├── Badge.jsx           # Status indicators and labels
-│   │       ├── Button.jsx          # Accessible button with variants
-│   │       └── Card.jsx            # Multi-purpose content card
-│   ├── features/                   # Domain-specific modules (Phase 2+)
+│   │   ├── layout/                 # Application shell (Member 3)
+│   │   │   ├── AppLayout.jsx       # Layout orchestrator (Sidebar + Header + Content + Footer)
+│   │   │   ├── Header.jsx          # Sticky header with breadcrumbs & mobile hamburger
+│   │   │   ├── Sidebar.jsx         # Responsive sidebar navigation with mobile drawer
+│   │   │   └── Footer.jsx          # Base application footer
+│   │   └── ui/                     # Atomic design system components (Member 2)
+│   │       ├── Badge.jsx           # Status indicators and pill tags
+│   │       ├── Button.jsx          # Accessible button with 5 variants and loading states
+│   │       ├── Card.jsx            # Composable card with header, body, and footer slots
+│   │       ├── Dropdown.jsx        # Zero-dependency action dropdown
+│   │       ├── Input.jsx           # Form input with icon slots, error, and helper states
+│   │       ├── Modal.jsx           # Accessible dialog modal with backdrop blur & Esc key trap
+│   │       ├── Select.jsx          # Styled select element with custom chevron
+│   │       ├── Showcase.jsx        # Interactive living showcase of all UI primitives
+│   │       ├── Tabs.jsx            # Pill and underline tabbed sub-navigation
+│   │       ├── Textarea.jsx        # Multiline text field with character count display
+│   │       └── index.js            # Barrel export for UI design system
+│   ├── features/                   # Domain-specific modules (Reserved for Phase 2 sprints)
 │   │   └── README.md               # Guidelines for feature modularization
-│   ├── pages/                      # Page-level components
-│   │   ├── WelcomePage.jsx         # Phase 1 welcome & architecture dashboard
-│   │   └── NotFoundPage.jsx        # 404 error page
-│   ├── styles/                     # Global stylesheets and design tokens
-│   │   └── index.css               # Tailwind CSS entry & base theme styles
+│   ├── pages/                      # Page-level route views
+│   │   ├── NotFoundPage.jsx        # 404 error page
+│   │   ├── PagePlaceholder.jsx     # Reusable "Coming Soon" placeholder for pending modules
+│   │   └── WelcomePage.jsx         # Project overview, module scope, and UI showcase view
+│   ├── styles/                     # Styling tokens & global styles (Member 2)
+│   │   └── index.css               # Tailwind CSS v4 theme variables and base reset
 │   ├── utils/                      # Shared helper functions
 │   │   ├── constants.js            # App configuration and metadata
 │   │   └── storage.js              # Safe localStorage wrapper
 │   └── main.jsx                    # React DOM entry point
 ├── index.html                      # HTML entry template
-├── package.json                    # Dependencies and npm scripts
+├── package.json                    # Project dependencies and npm scripts
 ├── vite.config.js                  # Vite & Tailwind build configuration
 ├── .gitignore                      # Git ignore rules
 └── LICENSE                         # Apache 2.0 License
@@ -119,78 +151,163 @@ campusCompass/
 
 ### Prerequisites
 
-- **Node.js**: Version `18.0.0` or higher (`node -v`)
-- **npm**: Version `9.0.0` or higher (`npm -v`)
+- **Node.js**: Version `18.0.0` or higher (verified on Node `v24.x`)
+- **npm**: Version `9.0.0` or higher
 
-### Installation
+### Installation & Setup
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/anuragverma025/campusCompass.git
-   cd campusCompass
    ```
 
-2. Checkout the feature branch:
+2. Navigate into the application directory:
    ```bash
-   git checkout -b feature/project-foundation
+   cd campusCompass
    ```
+   > ⚠️ **Important**: Ensure you run commands from within the `campusCompass/` directory where `package.json` resides.
 
 3. Install project dependencies:
    ```bash
    npm install
    ```
 
-### Development Server
+---
 
-Start the local Vite development server with Hot Module Replacement (HMR):
+## 📜 Available Scripts
+
+From within the `campusCompass` directory, the following scripts are available:
+
+| Script | Command | Purpose |
+| :--- | :--- | :--- |
+| **Development Server** | `npm run dev` | Launches local Vite development server with Hot Module Replacement (HMR) at `http://localhost:3000`. |
+| **Production Build** | `npm run build` | Compiles an optimized, tree-shaken production distribution in `dist/`. |
+| **Production Preview** | `npm run preview` | Starts a local static web server to test the generated `dist/` production build. |
+| **Automated QA Check** | `npm test` | Runs the headless QA smoke suite to verify SSR rendering across all routes, UI component exports, and storage utility integrity. |
+
+---
+
+## 👥 Team Work Allocation & Contribution Areas
+
+Campus Compass follows a 4-member modular ownership architecture to prevent merge conflicts and preserve independent git commit streams:
+
+| Member | Assigned Role | File & Directory Ownership | Key Deliverables |
+| :--- | :--- | :--- | :--- |
+| **Member 1** | **Project Architect & Integrator** | `package.json`, `vite.config.js`, `index.html`, `src/app/routes.jsx` | Scaffolding, Vite configuration, React Router structure, branch merges, and release coordination. |
+| **Member 2** | **Design Systems Lead** | `src/styles/index.css`, `src/components/ui/*` | Design tokens, color system, typography scale, atomic UI component library (`Button`, `Card`, `Badge`, `Modal`, `Input`, etc.), and UI Showcase. |
+| **Member 3** | **Layout & Navigation Engineer** | `src/components/layout/*`, `src/pages/PagePlaceholder.jsx` | Application shell, sticky `Header`, collapsible/mobile drawer `Sidebar`, `Footer`, view container integration, and placeholder views. |
+| **Member 4** | **Documentation & QA Lead** | `README.md`, `docs/*`, `scripts/qa-check.mjs` | Accurate project documentation, manual & automated testing checklists, bug reporting templates, and team handoff guide. |
+
+For detailed branch isolation guidelines, see [`docs/TEAM_WORK.md`](docs/TEAM_WORK.md).
+
+---
+
+## ✅ Team Testing Checklist
+
+Before opening a pull request or submitting code for evaluation, all team members must complete the following two verification routines:
+
+### 1. Automated Smoke Test Routine
+Run the automated test script to ensure zero runtime breaks across the route tree and component barrel:
 ```bash
-npm run dev
+npm test
 ```
-Open your browser and navigate to `http://localhost:3000`.
+- [x] All 7 registered routes (`/`, `/tasks`, `/calendar`, `/opportunities`, `/placement`, `/welcome`, catch-all `/*`) render without runtime exceptions.
+- [x] All 15 UI component primitives in `src/components/ui/index.js` export valid functions.
+- [x] Storage utility wrapper correctly exposes `get`, `set`, `remove`, and `clear`.
 
-### Production Build
+### 2. Manual Verification Matrix
 
-Create an optimized production bundle:
-```bash
-npm run build
-```
+| Area | Verification Test | Expected Standard | Status |
+| :--- | :--- | :--- | :--- |
+| **Build Integrity** | `npm run build` | Compiles cleanly with zero syntax errors, missing imports, or unresolvable assets. | **PASS** |
+| **Desktop Nav** | Click sidebar links (`/`, `/tasks`, `/calendar`, `/opportunities`, `/placement`) | Active link highlights with purple pill (`#EEF2FF`), Header title updates dynamically, page content renders corresponding placeholder. | **PASS** |
+| **Mobile Drawer** | Viewport < 768px: Tap hamburger menu in Header | Sidebar slides out smoothly from left; tapping backdrop, pressing `Escape`, or clicking any navigation link closes the drawer. | **PASS** |
+| **Accessibility** | Press `Tab` key on page load | "Skip to page content" link appears, pressing `Enter` shifts keyboard focus directly into the main content region. | **PASS** |
+| **UI Showcase** | Navigate to `/welcome` | All design system components render interactively; modal dialog opens/closes with backdrop blur and Escape key dismissal; button loading state activates on click. | **PASS** |
+| **404 Handling** | Navigate to an unmapped path (e.g., `/test-error`) | Renders `NotFoundPage` with a working "Return to Campus Compass" button that redirects to `/`. | **PASS** |
+| **Console Health** | Inspect DevTools Console (`F12`) | Zero unhandled errors, zero broken SVG asset requests, zero invalid HTML nesting warnings. | **PASS** |
 
-Preview the production build locally:
-```bash
-npm run preview
+For the full historical verification log, consult [`docs/TESTING_CHECKLIST.md`](docs/TESTING_CHECKLIST.md).
+
+---
+
+## 🐛 Bug Report Template
+
+If you encounter an issue or regression while developing or testing, submit an issue using this standardized format:
+
+```markdown
+### 🐞 Bug Report
+
+**1. Issue Summary**:
+A concise, one-sentence description of what went wrong (e.g., "Mobile sidebar does not dismiss when pressing Escape on Firefox Android").
+
+**2. Steps to Reproduce**:
+1. Open the dev server (`npm run dev`) and navigate to `http://localhost:3000`.
+2. Resize browser viewport to mobile width (390px).
+3. Click the top-left hamburger menu icon to open the navigation drawer.
+4. Press the `Escape` key (or tap the darkened backdrop).
+
+**3. Expected Result**:
+The navigation drawer should slide closed and focus should return to the menu toggle button.
+
+**4. Actual Result**:
+The drawer remains open and blocks interaction with the page content.
+
+**5. Severity**:
+- [ ] Critical (App crash, build break, data loss)
+- [ ] High (Major feature non-functional, navigation blocked)
+- [ ] Medium (UI rendering defect, layout overflow, missing styling)
+- [ ] Low (Typo, cosmetic misalignment, non-blocking warning)
+
+**Environment Details**:
+- OS: [e.g., Windows 11, macOS Sequoia, Ubuntu 24.04]
+- Browser: [e.g., Chrome 131, Firefox 133, Edge 131, Safari 18]
+- Viewport Size: [e.g., 390x844 (Mobile), 1280x800 (Desktop)]
 ```
 
 ---
 
-## 👥 Team Work Allocation & Collaboration
+## 🤝 Team Handoff Guide
 
-The project follows a 4-member modular ownership model to guarantee independent progress and clean Git commit history:
+Welcome to the team handoff for **Campus Compass**! The foundation, UI design system, application shell, and quality assurance framework are fully delivered and verified. Here is everything teammates need to know to begin building Phase 2 features.
 
-- **Member 1 (Architect)**: Project foundation, routing, Vite configuration, release integration.
-- **Member 2 (Design System)**: Design tokens, Tailwind configuration, reusable atomic UI components (`src/components/ui/`).
-- **Member 3 (App Shell)**: Sidebar, responsive navigation, mobile drawer layout (`src/components/layout/`).
-- **Member 4 (QA & Docs)**: README, setup instructions, manual testing checklist, and verification.
+### Quick-Start for Teammates
 
-For full contribution details, review [`docs/TEAM_WORK.md`](docs/TEAM_WORK.md).
+1. **Verify Your Local Environment**:
+   ```bash
+   cd campusCompass
+   npm install
+   npm test
+   npm run build
+   ```
+2. **Start Development**:
+   ```bash
+   npm run dev
+   ```
+   Navigate to `http://localhost:3000` to interact with the application shell and placeholders.
+3. **Inspect the Component Library**:
+   Navigate to `http://localhost:3000/welcome` to explore interactive demos and prop examples for all Member 2 UI primitives (`Button`, `Card`, `Badge`, `Modal`, `Input`, `Select`, `Textarea`, `Tabs`, `Dropdown`).
+4. **Implement Features in Modular Folders**:
+   Build upcoming domain modules inside `src/features/<feature-name>/` rather than in shared folders. Reference components from `src/components/ui/` and persistence utilities from `src/utils/storage.js`.
 
----
+### Validating Changes Before Submitting PRs
 
-## ✅ Quality & Testing Checklist
+Prior to opening a Pull Request:
+1. Run `npm test` &rarr; Ensure all routes and exports remain unbroken.
+2. Run `npm run build` &rarr; Ensure Vite produces a clean production bundle without missing module errors.
+3. Check responsive layouts across mobile (390px) and desktop (1280px).
+4. Do not push breaking changes directly to `main`; work exclusively within your assigned feature branch.
 
-All changes must satisfy the verification criteria outlined in [`docs/TESTING_CHECKLIST.md`](docs/TESTING_CHECKLIST.md) before merging into `main`.
+### Known Issues & Current Limitations
 
----
-
-## 🤝 Contributing Guidelines
-
-1. Always create a branch from the updated `main` (`git checkout -b feature/<name>`).
-2. Write atomic, conventional commit messages (e.g. `feat:`, `fix:`, `docs:`, `chore:`).
-3. Do not push breaking changes to `main`.
-4. Ensure `npm run build` succeeds prior to creating a Pull Request.
+To maintain accurate visibility across the engineering team, the following known states are documented:
+- **Phase 2 Module Logic is Pending**: The views for Dashboard (`/`), Tasks (`/tasks`), Calendar (`/calendar`), Opportunities (`/opportunities`), and Placement Tracker (`/placement`) currently display `PagePlaceholder` cards. These are intentional placeholders ready for domain logic implementation in Phase 2.
+- **Route Alias `/planner` vs `/tasks`**: The design documents initially referenced the academic tracker as `features/planner/`. In the application shell, Member 3 mapped this route to `/tasks`. Future feature owners can alias `/planner` to redirect to `/tasks` if needed.
+- **Direct Navigation to UI Showcase**: The UI Showcase is mapped to `/welcome`. It is not present as a link in the primary student sidebar to keep the navigation focused on student daily tools; access it directly via `http://localhost:3000/welcome`.
+- **Zero Backend Architecture**: By specification, Campus Compass has no backend, database, or external API dependency. All future data structures should be modeled locally using `src/utils/storage.js`.
 
 ---
 
 ## 📄 License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-

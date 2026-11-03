@@ -25,7 +25,7 @@ export const Showcase = () => {
 
   // Form states
   const [inputValue, setInputValue] = useState('');
-  const [inputError, setInputError] = useState('');
+  const [inputError, setInputError] = useState('Please enter a valid academic email address (@college.edu)');
   const [textareaValue, setTextareaValue] = useState('Preparing for upcoming data structures and algorithms mock interview.');
   const [selectedSemester, setSelectedSemester] = useState('sem-5');
 
@@ -316,7 +316,7 @@ export const Showcase = () => {
               <Input
                 label="Course Portal Email (With Error State)"
                 defaultValue="invalid-email@"
-                error={inputError || 'Please enter a valid academic email address (@college.edu)'}
+                error={inputError}
                 onChange={() => setInputError('')}
                 required
               />

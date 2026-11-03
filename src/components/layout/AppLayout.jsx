@@ -35,7 +35,11 @@ export const AppLayout = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSidebarOpen]);
 
-  const title = pageTitles[location.pathname] || 'Page not found';
+  const normalizedPath =
+    location.pathname.length > 1
+      ? location.pathname.replace(/\/+$/, '')
+      : location.pathname;
+  const title = pageTitles[normalizedPath] || 'Page not found';
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-[#0F172A]">
@@ -64,7 +68,7 @@ export const AppLayout = () => {
           >
             Skip to page content
           </a>
-          <div id="page-content">{outlet}</div>
+          <div id="page-content" tabIndex={-1} className="outline-none">{outlet}</div>
         </main>
       </div>
       <Footer />

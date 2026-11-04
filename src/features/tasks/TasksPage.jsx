@@ -6,6 +6,8 @@ import { Input } from '../../components/ui/Input';
 import { useTasks } from './useTasks';
 import { TaskFormModal } from './TaskFormModal';
 import { TaskItem } from './TaskItem';
+import { useAuth } from '../auth/AuthContext';
+import { studentStorage } from '../../utils/studentStorage';
 
 /* ─── Filter options ─────────────────────────────────────────────────────── */
 
@@ -108,7 +110,9 @@ function StatsBar({ tasks }) {
  * Uses the useTasks custom hook for state and localStorage persistence.
  */
 export function TasksPage() {
-  const { tasks, addTask, updateTask, toggleTask, deleteTask } = useTasks();
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
+  const { tasks, addTask, updateTask, toggleTask, deleteTask } = useTasks({ store });
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);

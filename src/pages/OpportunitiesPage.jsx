@@ -8,6 +8,8 @@ import { OpportunityCard } from '../features/opportunities/components/Opportunit
 import { OpportunityFormModal } from '../features/opportunities/components/OpportunityFormModal';
 import { DeleteConfirmModal } from '../features/opportunities/components/DeleteConfirmModal';
 import { OPPORTUNITY_CATEGORIES } from '../features/opportunities/utils/constants';
+import { useAuth } from '../features/auth/AuthContext';
+import { studentStorage } from '../utils/studentStorage';
 
 const CATEGORY_FILTER_OPTIONS = [
   { value: 'all', label: 'All Categories' },
@@ -26,13 +28,16 @@ const SORT_OPTIONS = [
 ];
 
 export const OpportunitiesPage = () => {
+  // Use student-scoped storage so each demo account sees their own bookmarks
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
   const {
     opportunities,
     addOpportunity,
     updateOpportunity,
     deleteOpportunity,
     toggleBookmark,
-  } = useOpportunitiesData();
+  } = useOpportunitiesData({ store });
 
   // Search & filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -353,4 +358,3 @@ export const OpportunitiesPage = () => {
 };
 
 export default OpportunitiesPage;
-

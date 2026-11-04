@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { storage } from '../../../utils/storage';
+import { storage as globalStorage } from '../../../utils/storage';
 import { CALENDAR_STORAGE_KEY, SAMPLE_CALENDAR_EVENTS } from '../utils/constants';
 
 /**
@@ -23,13 +23,19 @@ function sanitizeEvents(raw) {
 
 /**
  * Custom hook to manage student calendar events lifecycle with localStorage persistence.
+ * Accepts an optional `store` adapter (studentStorage) so each demo student's
+ * events are saved under a namespaced key. Falls back to global storage.
+ *
+ * @param {{ store?: object }} [options]
  */
-export function useCalendarEvents() {
+export function useCalendarEvents({ store } = {}) {
+  const adapter = store ?? globalStorage;
+
   const [events, setEvents] = useState(() => {
-    const raw = storage.get(CALENDAR_STORAGE_KEY, null);
+    const raw = adapter.get(CALENDAR_STORAGE_KEY, null);
     if (raw === null) {
       // First visit: seed sample events
-      storage.set(CALENDAR_STORAGE_KEY, SAMPLE_CALENDAR_EVENTS);
+      adapter.set(CALENDAR_STORAGE_KEY, SAMPLE_CALENDAR_EVENTS);
       return SAMPLE_CALENDAR_EVENTS;
     }
     return sanitizeEvents(raw);
@@ -37,7 +43,8 @@ export function useCalendarEvents() {
 
   // Keep storage synchronized
   useEffect(() => {
-    storage.set(CALENDAR_STORAGE_KEY, events);
+    adapter.set(CALENDAR_STORAGE_KEY, events);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events]);
 
   /** Add an event */
@@ -93,4 +100,3 @@ export function useCalendarEvents() {
 }
 
 export default useCalendarEvents;
-

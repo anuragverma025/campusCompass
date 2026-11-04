@@ -9,6 +9,8 @@ import ApplicationList from '../features/placement/components/ApplicationList';
 import ApplicationFormModal from '../features/placement/components/ApplicationFormModal';
 import DeleteConfirmModal from '../features/placement/components/DeleteConfirmModal';
 import SampleDataNotice from '../features/placement/components/SampleDataNotice';
+import { useAuth } from '../features/auth/AuthContext';
+import { studentStorage } from '../utils/studentStorage';
 
 /**
  * PlacementPage — Comprehensive Placement Tracker.
@@ -16,6 +18,8 @@ import SampleDataNotice from '../features/placement/components/SampleDataNotice'
  * and localStorage persistence with safe fallback.
  */
 const PlacementPage = () => {
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
   const {
     applications,
     addApplication,
@@ -25,7 +29,7 @@ const PlacementPage = () => {
     loadSampleData,
     clearAllApplications,
     hasSampleData,
-  } = usePlacementData();
+  } = usePlacementData({ store });
 
   // Search and filter state
   const [searchQuery, setSearchQuery] = useState('');

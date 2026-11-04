@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { storage } from '../../utils/storage';
+import { storage as globalStorage } from '../../utils/storage';
 
 /**
  * Task Data Structure (documented for the team):
@@ -77,14 +77,20 @@ function sanitiseTasksFromStorage(raw) {
  * Custom hook — useTasks
  *
  * Manages the full task CRUD lifecycle with localStorage persistence.
- * Exposes a stable, memoised API consumed by the Tasks page and sub-components.
+ * Accepts an optional `store` adapter (studentStorage) so each demo
+ * student's tasks are saved to a namespaced localStorage key.
+ * Falls back to the global storage adapter for backward compatibility.
+ *
+ * @param {{ store?: object }} [options]
  */
-export function useTasks() {
+export function useTasks({ store } = {}) {
+  const adapter = store ?? globalStorage;
+
   const [tasks, setTasks] = useState(() => {
-    const raw = storage.get(STORAGE_KEY, null);
+    const raw = adapter.get(STORAGE_KEY, null);
     if (raw === null) {
       // First visit — seed sample data
-      storage.set(STORAGE_KEY, SAMPLE_TASKS);
+      adapter.set(STORAGE_KEY, SAMPLE_TASKS);
       return SAMPLE_TASKS;
     }
     const safe = sanitiseTasksFromStorage(raw);
@@ -94,7 +100,9 @@ export function useTasks() {
 
   // Keep localStorage in sync whenever tasks change
   useEffect(() => {
-    storage.set(STORAGE_KEY, tasks);
+    adapter.set(STORAGE_KEY, tasks);
+    // adapter identity is stable per render cycle; eslint-disable is intentional
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks]);
 
   /** Add a new task */
@@ -144,4 +152,3 @@ export function useTasks() {
 
   return { tasks, addTask, updateTask, toggleTask, deleteTask };
 }
-

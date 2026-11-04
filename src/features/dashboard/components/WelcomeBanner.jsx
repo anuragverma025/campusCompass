@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Badge } from '../../../components/ui/Badge';
-import { storage } from '../../../utils/storage';
+import { useAuth } from '../../auth/AuthContext';
+import { studentStorage } from '../../../utils/studentStorage';
 
 const USER_NAME_KEY = 'campus_compass_student_name';
 
 /**
  * WelcomeBanner — Friendly personalizable greeting header for the student dashboard.
- * Does not invent a fake name; allows the student to set or edit their preferred display name.
+ * Uses the logged-in demo student's name and course, while allowing custom overrides.
  */
 export const WelcomeBanner = () => {
-  const [name, setName] = useState('');
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
+  const defaultName = student?.name || '';
+
+  const [name, setName] = useState(defaultName);
   const [isEditing, setIsEditing] = useState(false);
-  const [tempName, setTempName] = useState('');
+  const [tempName, setTempName] = useState(defaultName);
 
   useEffect(() => {
-    const saved = storage.get(USER_NAME_KEY, '');
-    if (typeof saved === 'string') {
+    const saved = store.get(USER_NAME_KEY, null);
+    if (typeof saved === 'string' && saved.trim()) {
       setName(saved);
       setTempName(saved);
+    } else if (student?.name) {
+      setName(student.name);
+      setTempName(student.name);
     }
-  }, []);
+  }, [student?.id, student?.name]);
 
   const handleSaveName = (e) => {
     e?.preventDefault();
     const clean = tempName.trim();
-    setName(clean);
-    storage.set(USER_NAME_KEY, clean);
+    setName(clean || student?.name || '');
+    store.set(USER_NAME_KEY, clean);
     setIsEditing(false);
   };
 
@@ -65,7 +73,7 @@ export const WelcomeBanner = () => {
               📅 {dateFormatted}
             </Badge>
             <span className="text-xs text-indigo-200 hidden sm:inline">
-              Student Command Center
+              {student?.course || 'Student Command Center'}
             </span>
           </div>
 
@@ -85,7 +93,7 @@ export const WelcomeBanner = () => {
                 title="Personalize your name"
                 aria-label="Edit your preferred name"
               >
-                {name ? '✎ edit name' : '+ set your name'}
+                {name ? '✎ edit' : '+ set name'}
               </button>
             ) : (
               <form onSubmit={handleSaveName} className="inline-flex items-center gap-1.5 ml-2">
@@ -125,11 +133,11 @@ export const WelcomeBanner = () => {
         <div className="flex items-center gap-3 pt-2 md:pt-0">
           <div className="bg-white/10 border border-white/15 backdrop-blur-xs rounded-xl px-4 py-2.5 text-right hidden sm:block">
             <span className="text-[11px] uppercase tracking-wider text-indigo-200 font-semibold block">
-              Platform Status
+              Logged in as
             </span>
             <span className="text-xs font-bold text-white flex items-center justify-end gap-1.5 mt-0.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              All Systems Operational
+              {student?.email || 'Demo Session'}
             </span>
           </div>
         </div>
@@ -139,4 +147,3 @@ export const WelcomeBanner = () => {
 };
 
 export default WelcomeBanner;
-

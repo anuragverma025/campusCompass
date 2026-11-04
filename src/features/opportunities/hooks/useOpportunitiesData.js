@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { storage } from '../../../utils/storage';
+import { storage as globalStorage } from '../../../utils/storage';
 import { OPPORTUNITIES_STORAGE_KEY, SAMPLE_OPPORTUNITIES } from '../utils/constants';
 
 /**
@@ -24,12 +24,18 @@ function sanitizeOpportunities(raw) {
 
 /**
  * Custom hook for opportunities lifecycle and bookmarks with localStorage persistence.
+ * Accepts an optional `store` adapter (studentStorage) so each demo student's
+ * data is saved under a namespaced key. Falls back to global storage.
+ *
+ * @param {{ store?: object }} [options]
  */
-export function useOpportunitiesData() {
+export function useOpportunitiesData({ store } = {}) {
+  const adapter = store ?? globalStorage;
+
   const [opportunities, setOpportunities] = useState(() => {
-    const raw = storage.get(OPPORTUNITIES_STORAGE_KEY, null);
+    const raw = adapter.get(OPPORTUNITIES_STORAGE_KEY, null);
     if (raw === null) {
-      storage.set(OPPORTUNITIES_STORAGE_KEY, SAMPLE_OPPORTUNITIES);
+      adapter.set(OPPORTUNITIES_STORAGE_KEY, SAMPLE_OPPORTUNITIES);
       return SAMPLE_OPPORTUNITIES;
     }
     return sanitizeOpportunities(raw);
@@ -37,7 +43,8 @@ export function useOpportunitiesData() {
 
   // Synchronize state with localStorage
   useEffect(() => {
-    storage.set(OPPORTUNITIES_STORAGE_KEY, opportunities);
+    adapter.set(OPPORTUNITIES_STORAGE_KEY, opportunities);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opportunities]);
 
   /** Add a new opportunity listing */
@@ -108,4 +115,3 @@ export function useOpportunitiesData() {
 }
 
 export default useOpportunitiesData;
-

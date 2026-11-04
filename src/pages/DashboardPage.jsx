@@ -11,16 +11,20 @@ import UpcomingTasksCard from '../features/dashboard/components/UpcomingTasksCar
 import UpcomingEventsCard from '../features/dashboard/components/UpcomingEventsCard';
 import SavedOpportunitiesCard from '../features/dashboard/components/SavedOpportunitiesCard';
 import PlacementSnapshotCard from '../features/dashboard/components/PlacementSnapshotCard';
+import { useAuth } from '../features/auth/AuthContext';
+import { studentStorage } from '../utils/studentStorage';
 
 /**
  * DashboardPage — Central command center summarizing all Campus Compass modules.
  * Reads live data from existing feature hooks and local storage without duplicating state.
  */
 export const DashboardPage = () => {
-  const { tasks = [], toggleTask } = useTasks();
-  const { events = [] } = useCalendarEvents();
-  const { opportunities = [] } = useOpportunitiesData();
-  const { applications = [] } = usePlacementData();
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
+  const { tasks = [], toggleTask } = useTasks({ store });
+  const { events = [] } = useCalendarEvents({ store });
+  const { opportunities = [] } = useOpportunitiesData({ store });
+  const { applications = [] } = usePlacementData({ store });
 
   const todayStr = new Date().toISOString().slice(0, 10);
 

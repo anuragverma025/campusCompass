@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
+import { useAuth } from '../../features/auth/AuthContext';
 
 export const Header = ({ title, onMenuClick, isSidebarOpen }) => {
+  const { student, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <header className="sticky top-0 z-30 border-b border-[#E2E8F0] bg-white/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
@@ -39,16 +48,30 @@ export const Header = ({ title, onMenuClick, isSidebarOpen }) => {
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <div className="hidden text-right sm:block">
-            <p className="text-sm font-medium leading-5 text-[#0F172A]">Student</p>
-            <p className="text-xs leading-4 text-[#64748B]">Campus Compass</p>
+            <p className="text-sm font-semibold leading-5 text-[#0F172A]">{student?.name || 'Student'}</p>
+            <p className="text-xs leading-4 text-[#64748B]">{student?.course || 'Campus Compass'}</p>
           </div>
           <div
             role="img"
-            aria-label="Student profile"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF2FF] text-sm font-semibold text-[#4338CA]"
+            aria-label={`Profile of ${student?.name || 'Student'}`}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF2FF] text-xs font-bold text-[#4338CA] border border-indigo-100"
           >
-            S
+            {student?.avatar || 'S'}
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            title="Log out of demo session"
+            className="text-xs text-[#64748B] hover:text-[#B91C1C] hover:bg-red-50 !py-1.5 !px-2.5 ml-1"
+            leftIcon={
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              </svg>
+            }
+          >
+            <span className="hidden md:inline">Sign out</span>
+          </Button>
         </div>
       </div>
     </header>

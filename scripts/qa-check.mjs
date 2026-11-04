@@ -16,6 +16,10 @@ const vite = await createServer({
 let failures = 0;
 
 try {
+  const { storage } = await vite.ssrLoadModule('./src/utils/storage.js');
+  // Seed demo student session for authenticated route checks
+  storage.set('campusCompass_activeStudentId', 'student-1');
+
   const { AppRoutes } = await vite.ssrLoadModule('./src/app/routes.jsx');
   const { MemoryRouter } = await vite.ssrLoadModule('react-router-dom');
 
@@ -83,7 +87,6 @@ try {
 
   // Test Storage Utility
   console.log('\n--- Testing Storage Utility Wrapper ---');
-  const { storage } = await vite.ssrLoadModule('./src/utils/storage.js');
   if (
     typeof storage.get === 'function' &&
     typeof storage.set === 'function' &&

@@ -9,6 +9,8 @@ import { CalendarEventCard } from '../features/calendar/components/CalendarEvent
 import { CalendarEventFormModal } from '../features/calendar/components/CalendarEventFormModal';
 import { DeleteConfirmModal } from '../features/calendar/components/DeleteConfirmModal';
 import { EVENT_CATEGORIES } from '../features/calendar/utils/constants';
+import { useAuth } from '../features/auth/AuthContext';
+import { studentStorage } from '../utils/studentStorage';
 
 const CATEGORY_FILTER_OPTIONS = [
   { value: 'all', label: 'All Categories' },
@@ -23,7 +25,10 @@ const TIMEFRAME_OPTIONS = [
 ];
 
 export const CalendarPage = () => {
-  const { events, addEvent, updateEvent, deleteEvent } = useCalendarEvents();
+  // Use student-scoped storage so each demo account sees their own events
+  const { student } = useAuth();
+  const store = studentStorage(student?.id);
+  const { events, addEvent, updateEvent, deleteEvent } = useCalendarEvents({ store });
 
   // Search & filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -401,4 +406,3 @@ export const CalendarPage = () => {
 };
 
 export default CalendarPage;
-

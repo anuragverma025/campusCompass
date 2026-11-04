@@ -29,15 +29,21 @@ const sanitizeApplications = (data) => {
 
 /**
  * usePlacementData — Custom hook managing placement applications state and localStorage persistence.
+ * Accepts an optional `store` adapter (studentStorage) so each demo student's
+ * applications are saved under a namespaced key. Falls back to global storage.
+ *
+ * @param {{ store?: object }} [options]
  */
-export const usePlacementData = () => {
+export const usePlacementData = ({ store } = {}) => {
+  const adapter = store ?? storage;
+
   const [applications, setApplications] = useState(() => {
     try {
-      const stored = storage.get(PLACEMENT_STORAGE_KEY, null);
+      const stored = adapter.get(PLACEMENT_STORAGE_KEY, null);
 
       if (stored === null) {
         // First visit: Seed with sample applications
-        storage.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
+        adapter.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
         return SAMPLE_APPLICATIONS;
       }
 
@@ -48,7 +54,7 @@ export const usePlacementData = () => {
 
       // If data was corrupted, safely re-seed
       console.warn('[Campus Compass] Malformed placement data encountered in storage; falling back to sample data.');
-      storage.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
+      adapter.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
       return SAMPLE_APPLICATIONS;
     } catch (err) {
       console.error('[Campus Compass] Failed to initialize placement applications:', err);
@@ -59,10 +65,11 @@ export const usePlacementData = () => {
   // Sync state to localStorage whenever applications change
   useEffect(() => {
     try {
-      storage.set(PLACEMENT_STORAGE_KEY, applications);
+      adapter.set(PLACEMENT_STORAGE_KEY, applications);
     } catch (err) {
       console.error('[Campus Compass] Failed to sync placement applications to storage:', err);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applications]);
 
   // Add application
@@ -121,14 +128,16 @@ export const usePlacementData = () => {
 
   // Reset / load sample applications
   const loadSampleData = useCallback(() => {
-    storage.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
+    adapter.set(PLACEMENT_STORAGE_KEY, SAMPLE_APPLICATIONS);
     setApplications(SAMPLE_APPLICATIONS);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Clear all applications
   const clearAllApplications = useCallback(() => {
-    storage.set(PLACEMENT_STORAGE_KEY, []);
+    adapter.set(PLACEMENT_STORAGE_KEY, []);
     setApplications([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Check if current list contains sample data

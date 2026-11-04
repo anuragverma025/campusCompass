@@ -146,48 +146,36 @@ export const OpportunitiesPage = () => {
       </div>
 
       {/* Stats Summary Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Total Listings
-          </span>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Total Listings</span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-bold text-[#0F172A]">{stats.total}</span>
-            <span className="text-xs text-slate-400">tracked</span>
+            <span className="text-[11px] text-[#94A3B8]">tracked</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Saved / Bookmarked
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Saved / Bookmarked</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-bold text-amber-600">{stats.savedCount}</span>
-            {stats.savedCount > 0 && (
-              <Badge variant="warning" size="sm" dot>
-                Shortlisted
-              </Badge>
-            )}
+            <span className="text-2xl font-bold text-[#0F172A]">{stats.savedCount}</span>
+            <span className="text-[11px] text-[#94A3B8]">shortlisted</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Internships
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Internships</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-bold text-[#4338CA]">{stats.internshipCount}</span>
-            <span className="text-xs text-slate-400">open roles</span>
+            <span className="text-2xl font-bold text-[#0F172A]">{stats.internshipCount}</span>
+            <span className="text-[11px] text-[#94A3B8]">roles</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Scholarships &amp; Grants
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Scholarships &amp; Grants</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-bold text-[#15803D]">{stats.grantAndContestCount}</span>
-            <span className="text-xs text-slate-400">funded</span>
+            <span className="text-2xl font-bold text-[#0F172A]">{stats.grantAndContestCount}</span>
+            <span className="text-[11px] text-[#94A3B8]">open</span>
           </div>
         </div>
       </div>

@@ -85,16 +85,16 @@ function StatsBar({ tasks }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
       {[
-        { label: 'Total Tasks', value: total, badge: null },
-        { label: 'Pending', value: pending, badge: 'warning' },
-        { label: 'Completed', value: completed, badge: 'success' },
-        { label: overdue > 0 ? 'Overdue' : 'High Priority', value: overdue > 0 ? overdue : high, badge: overdue > 0 ? 'error' : 'primary' },
-      ].map(({ label, value, badge }) => (
-        <div key={label} className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 flex flex-col gap-1 shadow-xs">
+        { label: 'Total Tasks', value: total, sub: 'tracked' },
+        { label: 'Pending', value: pending, sub: 'in progress' },
+        { label: 'Completed', value: completed, sub: 'done' },
+        { label: overdue > 0 ? 'Overdue' : 'High Priority', value: overdue > 0 ? overdue : high, sub: overdue > 0 ? 'urgent' : 'high' },
+      ].map(({ label, value, sub }) => (
+        <div key={label} className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 flex flex-col justify-between shadow-2xs">
           <span className="text-xs text-[#64748B] font-medium">{label}</span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-bold text-[#0F172A]">{value}</span>
-            {badge && <Badge variant={badge} dot size="sm">{label}</Badge>}
+            <span className="text-[11px] text-[#94A3B8]">{sub}</span>
           </div>
         </div>
       ))}

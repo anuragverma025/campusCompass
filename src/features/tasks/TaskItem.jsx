@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
-
-/** Maps priority value → Badge variant */
-const PRIORITY_BADGE = {
-  high: { variant: 'error', label: 'High' },
-  medium: { variant: 'warning', label: 'Medium' },
-  low: { variant: 'success', label: 'Low' },
-};
 
 /** Formats "YYYY-MM-DD" → human-readable "DD Mon YYYY" */
 function formatDate(iso) {
@@ -31,14 +23,18 @@ function isDueToday(task) {
   return task.dueDate === today;
 }
 
+const PRIORITY_STYLES = {
+  high: 'text-[#B91C1C] bg-red-50 border-red-200',
+  medium: 'text-[#B45309] bg-amber-50 border-amber-200',
+  low: 'text-[#15803D] bg-emerald-50 border-emerald-200',
+};
+
 /**
  * TaskItem — a single row in the task list.
- *
- * @param {{ task: object, onToggle: Function, onEdit: Function, onDelete: Function }} props
+ * Focuses on task title and due date, with restrained priority badges.
  */
 export function TaskItem({ task, onToggle, onEdit, onDelete }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const priority = PRIORITY_BADGE[task.priority] ?? PRIORITY_BADGE.medium;
 
   const overdue = isOverdue(task);
   const dueToday = isDueToday(task);
@@ -57,10 +53,10 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
   return (
     <li
-      className={`group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 py-4 bg-white border rounded-xl transition-all duration-150 hover:shadow-sm
-        ${task.completed ? 'border-slate-100 opacity-70' : 'border-[#E2E8F0]'}
-        ${overdue ? 'border-l-4 border-l-[#B91C1C]' : ''}
-        ${dueToday && !overdue ? 'border-l-4 border-l-[#B45309]' : ''}
+      className={`group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 py-3.5 bg-white border rounded-xl transition-all duration-150 hover:shadow-2xs
+        ${task.completed ? 'border-slate-100 bg-slate-50/50 opacity-75' : 'border-[#E2E8F0]'}
+        ${overdue ? 'border-l-3 border-l-[#B91C1C]' : ''}
+        ${dueToday && !overdue ? 'border-l-3 border-l-[#B45309]' : ''}
       `}
     >
       {/* Checkbox */}
@@ -68,11 +64,11 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
         type="button"
         aria-label={task.completed ? 'Mark task as incomplete' : 'Mark task as complete'}
         onClick={() => onToggle(task.id)}
-        className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all
+        className={`flex-shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition-all
           focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4338CA] focus-visible:ring-offset-2
           ${task.completed
             ? 'bg-[#15803D] border-[#15803D]'
-            : 'border-slate-300 hover:border-[#4338CA]'}
+            : 'border-slate-300 hover:border-[#4338CA] bg-white'}
         `}
       >
         {task.completed && (
@@ -82,11 +78,11 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
         )}
       </button>
 
-      {/* Content */}
+      {/* Content: Title & Due Date are the visual focus */}
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-0.5">
           <span
-            className={`text-sm font-semibold truncate max-w-xs sm:max-w-sm
+            className={`text-sm font-semibold truncate max-w-xs sm:max-w-md
               ${task.completed ? 'line-through text-slate-400' : 'text-[#0F172A]'}
             `}
           >
@@ -94,12 +90,20 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
           </span>
 
           {task.isSample && (
-            <Badge variant="info" size="sm">Sample</Badge>
+            <span className="text-[10px] text-slate-400 border border-slate-200 px-1.5 py-0.2 rounded font-normal">
+              Sample
+            </span>
           )}
 
-          <Badge variant={priority.variant} size="sm" dot>
-            {priority.label}
-          </Badge>
+          {task.priority && (
+            <span
+              className={`text-[10px] font-medium px-1.5 py-0.2 rounded border capitalize ${
+                PRIORITY_STYLES[task.priority] || 'text-slate-600 bg-slate-50 border-slate-200'
+              }`}
+            >
+              {task.priority}
+            </span>
+          )}
         </div>
 
         {task.description && (
@@ -108,7 +112,7 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
           </p>
         )}
 
-        <div className="flex items-center gap-3 mt-1.5">
+        <div className="flex items-center gap-2 mt-1">
           <span className={`inline-flex items-center gap-1 text-xs font-medium
             ${overdue ? 'text-[#B91C1C]' : dueToday ? 'text-[#B45309]' : 'text-[#64748B]'}
           `}>
@@ -122,8 +126,8 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
         </div>
       </div>
 
-      {/* Actions — visible on hover on desktop, always visible on mobile */}
-      <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 transition-opacity">
+      {/* Actions */}
+      <div className="flex items-center gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 transition-opacity">
         <Button
           variant="ghost"
           size="sm"
@@ -158,4 +162,3 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }) {
 }
 
 export default TaskItem;
-

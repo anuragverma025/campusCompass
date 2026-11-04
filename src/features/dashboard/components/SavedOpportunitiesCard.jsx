@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge } from '../../../components/ui/Badge';
-import { CATEGORY_BADGE_VARIANT, CATEGORY_LABELS } from '../../opportunities/utils/constants';
 
 function formatDeadline(dateStr) {
   if (!dateStr) return { text: 'No deadline', isOverdue: false, isApproaching: false };
@@ -24,92 +22,56 @@ function formatDeadline(dateStr) {
 }
 
 export const SavedOpportunitiesCard = ({ opportunities = [] }) => {
-  // Filter bookmarked opportunities and sort by earliest deadline
   const savedOpportunities = opportunities
     .filter((o) => o.isBookmarked)
     .sort((a, b) => a.deadline.localeCompare(b.deadline))
     .slice(0, 3);
 
   return (
-    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+    <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-2xs flex flex-col justify-between">
       <div>
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-amber-500" />
-            <h2 className="text-base font-bold text-[#0F172A] tracking-tight">
-              Shortlisted Opportunities
-            </h2>
-          </div>
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+          <h2 className="text-sm font-semibold text-[#0F172A]">
+            Saved Opportunities ({savedOpportunities.length})
+          </h2>
           <Link
             to="/opportunities"
-            className="text-xs text-[#4338CA] hover:underline font-semibold"
+            className="text-xs text-[#4338CA] hover:underline font-medium"
           >
-            All listings ({opportunities.length}) &rarr;
+            All listings &rarr;
           </Link>
         </div>
 
         {savedOpportunities.length === 0 ? (
-          <div className="py-8 text-center space-y-2">
-            <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-500 mx-auto flex items-center justify-center">
-              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-              </svg>
-            </div>
-            <p className="text-sm font-semibold text-[#0F172A]">No saved opportunities</p>
-            <p className="text-xs text-[#64748B] max-w-xs mx-auto">
-              Bookmark internships, scholarships, and hackathons to track their deadlines here.
-            </p>
-            <Link
-              to="/opportunities"
-              className="inline-block mt-2 text-xs font-semibold text-[#4338CA] hover:underline"
-            >
-              Browse opportunities radar
+          <div className="py-8 text-center space-y-1.5">
+            <p className="text-sm font-medium text-[#0F172A]">No saved opportunities</p>
+            <p className="text-xs text-[#64748B]">Bookmark internships and scholarships to track them here.</p>
+            <Link to="/opportunities" className="inline-block mt-1 text-xs text-[#4338CA] hover:underline font-medium">
+              Browse radar
             </Link>
           </div>
         ) : (
-          <ul className="space-y-2.5" role="list">
+          <ul className="divide-y divide-slate-100" role="list">
             {savedOpportunities.map((opp) => {
-              const badgeVariant = CATEGORY_BADGE_VARIANT[opp.category] || 'default';
-              const categoryLabel = CATEGORY_LABELS[opp.category] || opp.category;
               const deadline = formatDeadline(opp.deadline);
 
               return (
                 <li
                   key={opp.id}
-                  className="p-3 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100 flex items-start justify-between gap-3"
+                  className="py-2.5 flex items-start justify-between gap-3 first:pt-0 last:pb-0"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[11px] font-bold text-[#4338CA] uppercase tracking-wider truncate">
-                        {opp.organization}
-                      </span>
-                      {opp.isSample && (
-                        <Badge variant="info" size="sm">
-                          Sample
-                        </Badge>
-                      )}
-                    </div>
-
+                    <p className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider truncate">
+                      {opp.organization}
+                    </p>
                     <h3 className="text-xs font-semibold text-[#0F172A] truncate mt-0.5">
                       {opp.title}
                     </h3>
-
-                    <div className="flex items-center gap-2 mt-1.5 text-[11px]">
-                      <Badge variant={badgeVariant} size="sm" dot>
-                        {categoryLabel}
-                      </Badge>
-                      <span
-                        className={`font-semibold ${
-                          deadline.isOverdue
-                            ? 'text-[#B91C1C]'
-                            : deadline.isApproaching
-                            ? 'text-[#B45309]'
-                            : 'text-slate-500'
-                        }`}
-                      >
-                        ⏱ {deadline.text}
+                    <p className="text-[11px] text-[#64748B] mt-0.5">
+                      <span className={deadline.isOverdue ? 'text-[#B91C1C]' : deadline.isApproaching ? 'text-[#B45309]' : 'text-[#64748B]'}>
+                        Due: {deadline.text}
                       </span>
-                    </div>
+                    </p>
                   </div>
 
                   {opp.link && (
@@ -117,13 +79,10 @@ export const SavedOpportunitiesCard = ({ opportunities = [] }) => {
                       href={opp.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="shrink-0 text-xs font-semibold text-[#4338CA] hover:text-[#3730A3] bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
-                      aria-label={`Apply to ${opp.title} at ${opp.organization}`}
+                      className="shrink-0 text-xs font-medium text-[#4338CA] hover:underline self-center"
+                      aria-label={`Apply to ${opp.title}`}
                     >
-                      <span>Apply</span>
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
+                      Apply &rarr;
                     </a>
                   )}
                 </li>
@@ -133,10 +92,10 @@ export const SavedOpportunitiesCard = ({ opportunities = [] }) => {
         )}
       </div>
 
-      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <span>Shortlisted by deadline</span>
+      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#64748B]">
+        <span>Bookmarked items</span>
         <Link to="/opportunities" className="text-[#4338CA] hover:underline font-medium">
-          Manage All Bookmarks
+          Manage bookmarks
         </Link>
       </div>
     </div>
@@ -144,4 +103,3 @@ export const SavedOpportunitiesCard = ({ opportunities = [] }) => {
 };
 
 export default SavedOpportunitiesCard;
-

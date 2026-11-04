@@ -6,10 +6,7 @@ import Button from '../components/ui/Button';
 
 /**
  * LoginPage — Demo login entry point for Campus Compass.
- *
- * ⚠️  This is a frontend-only college project demo.
- * It does NOT provide real security or protect actual personal data.
- * Credentials are intentionally visible for demonstration and grading purposes.
+ * Clean, restrained, and consistent with the rest of the application.
  */
 export const LoginPage = () => {
   const { login, isLoggedIn } = useAuth();
@@ -54,7 +51,6 @@ export const LoginPage = () => {
     setErrors({});
     setIsLoading(true);
 
-    // Simulate a brief async delay for a realistic feel
     setTimeout(() => {
       const result = login(email.trim(), password);
       if (result.ok) {
@@ -63,7 +59,7 @@ export const LoginPage = () => {
         setAuthError(result.error);
       }
       setIsLoading(false);
-    }, 400);
+    }, 250);
   }
 
   /* ── Quick-fill a demo account ──────────────────────────────────── */
@@ -75,47 +71,44 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center px-4 py-8 sm:py-12">
       {/* ── Brand header ── */}
-      <div className="mb-8 flex flex-col items-center gap-3 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4338CA] text-white shadow-lg">
-          <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <div className="mb-6 flex flex-col items-center gap-2 text-center">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#4338CA] text-white shadow-2xs">
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <circle cx="12" cy="12" r="9" />
             <path strokeLinecap="round" strokeLinejoin="round" d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z" />
           </svg>
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-[#0F172A]">
+          <h1 className="text-xl font-bold tracking-tight text-[#0F172A]">
             Campus Compass
           </h1>
-          <p className="mt-0.5 text-sm text-[#64748B]">The Student Life Assistant</p>
+          <p className="text-xs text-[#64748B]">The Student Life Assistant</p>
         </div>
       </div>
 
       {/* ── Login card ── */}
-      <div className="w-full max-w-sm rounded-2xl border border-[#E2E8F0] bg-white shadow-sm px-6 py-7 sm:px-8">
-        <h2 className="text-lg font-bold text-[#0F172A] mb-1">Sign in to your account</h2>
-        <p className="text-xs text-[#64748B] mb-5">
-          Use one of the demo accounts below — this is a frontend-only college project demo.
+      <div className="w-full max-w-sm rounded-xl border border-[#E2E8F0] bg-white shadow-2xs px-6 py-6">
+        <h2 className="text-base font-semibold text-[#0F172A] mb-0.5">Sign in</h2>
+        <p className="text-xs text-[#64748B] mb-4">
+          Select a student demo profile below or enter credentials.
         </p>
 
         {/* Auth-level error */}
         {authError && (
           <div
             role="alert"
-            className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700"
+            className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
           >
-            <svg viewBox="0 0 20 20" fill="currentColor" className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-5.75a.75.75 0 001.5 0V7.75a.75.75 0 00-1.5 0v4.5zm.75 2.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
-            </svg>
             <span>{authError}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        <form onSubmit={handleSubmit} noValidate className="space-y-3.5">
           {/* Email */}
           <div>
-            <label htmlFor="login-email" className="block text-sm font-medium text-[#0F172A] mb-1">
+            <label htmlFor="login-email" className="block text-xs font-medium text-[#0F172A] mb-1">
               Email address
             </label>
             <input
@@ -125,7 +118,7 @@ export const LoginPage = () => {
               value={email}
               onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: undefined })); }}
               placeholder="student@demo.com"
-              className={`w-full rounded-lg border px-3 py-2 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition focus:ring-2 focus:ring-[#4338CA] focus:border-[#4338CA] ${
+              className={`w-full rounded-lg border px-3 py-2 text-xs text-[#0F172A] placeholder:text-slate-400 outline-none transition focus:ring-2 focus:ring-[#4338CA]/20 focus:border-[#4338CA] ${
                 errors.email ? 'border-red-400 bg-red-50' : 'border-[#E2E8F0] bg-white'
               }`}
               aria-describedby={errors.email ? 'email-error' : undefined}
@@ -138,7 +131,7 @@ export const LoginPage = () => {
 
           {/* Password */}
           <div>
-            <label htmlFor="login-password" className="block text-sm font-medium text-[#0F172A] mb-1">
+            <label htmlFor="login-password" className="block text-xs font-medium text-[#0F172A] mb-1">
               Password
             </label>
             <div className="relative">
@@ -149,7 +142,7 @@ export const LoginPage = () => {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: undefined })); }}
                 placeholder="Enter password"
-                className={`w-full rounded-lg border px-3 py-2 pr-10 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition focus:ring-2 focus:ring-[#4338CA] focus:border-[#4338CA] ${
+                className={`w-full rounded-lg border px-3 py-2 pr-10 text-xs text-[#0F172A] placeholder:text-slate-400 outline-none transition focus:ring-2 focus:ring-[#4338CA]/20 focus:border-[#4338CA] ${
                   errors.password ? 'border-red-400 bg-red-50' : 'border-[#E2E8F0] bg-white'
                 }`}
                 aria-describedby={errors.password ? 'password-error' : undefined}
@@ -192,44 +185,41 @@ export const LoginPage = () => {
       </div>
 
       {/* ── Demo credentials panel ── */}
-      <div className="mt-5 w-full max-w-sm rounded-2xl border border-[#E2E8F0] bg-white shadow-sm px-6 py-5">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-xs font-bold">!</span>
-          <h3 className="text-sm font-semibold text-[#0F172A]">Demo Accounts</h3>
-          <span className="ml-auto text-xs text-[#64748B]">Click to auto-fill →</span>
+      <div className="mt-4 w-full max-w-sm rounded-xl border border-[#E2E8F0] bg-white shadow-2xs px-5 py-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xs font-semibold text-[#0F172A]">Demo Student Accounts</h3>
+          <span className="text-[11px] text-[#4338CA]">Click to select</span>
         </div>
-        <p className="text-xs text-[#64748B] mb-3 leading-relaxed">
-          This is a frontend-only college project demo. Credentials are intentionally visible. No real data is collected.
+        <p className="text-[11px] text-[#64748B] mb-2.5">
+          Select any profile to log in and view their personal tasks, timetable, and applications:
         </p>
-        <ul className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {DEMO_ACCOUNTS.map((account) => (
-            <li key={account.id}>
-              <button
-                type="button"
-                onClick={() => fillAccount(account)}
-                className="w-full text-left rounded-xl border border-[#E2E8F0] px-3.5 py-2.5 hover:border-[#4338CA] hover:bg-[#EEF2FF] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4338CA] group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EEF2FF] text-xs font-bold text-[#4338CA] group-hover:bg-[#4338CA] group-hover:text-white transition-colors">
-                    {account.avatar}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#0F172A] truncate">{account.name}</p>
-                    <p className="text-xs text-[#64748B] truncate">{account.email} · <span className="font-mono">{account.password}</span></p>
-                  </div>
+            <button
+              key={account.id}
+              type="button"
+              onClick={() => fillAccount(account)}
+              className="text-left rounded-lg border border-[#E2E8F0] p-2 hover:border-[#4338CA] hover:bg-[#EEF2FF] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4338CA] group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EEF2FF] text-[10px] font-bold text-[#4338CA] group-hover:bg-[#4338CA] group-hover:text-white transition-colors">
+                  {account.avatar}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#0F172A] truncate">{account.name}</p>
+                  <p className="text-[10px] text-[#64748B] truncate">{account.email}</p>
                 </div>
-              </button>
-            </li>
+              </div>
+            </button>
           ))}
-        </ul>
+        </div>
       </div>
 
-      <p className="mt-6 text-center text-xs text-[#94A3B8]">
-        Campus Compass — College Project Demo · Data stored in browser only
+      <p className="mt-4 text-center text-[11px] text-[#94A3B8]">
+        Campus Compass &bull; Frontend-only college demo &bull; Local storage
       </p>
     </div>
   );
 };
 
 export default LoginPage;
-

@@ -160,48 +160,36 @@ export const CalendarPage = () => {
       </div>
 
       {/* Stats Summary Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Total Events
-          </span>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Total Events</span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-bold text-[#0F172A]">{stats.total}</span>
-            <span className="text-xs text-slate-400">scheduled</span>
+            <span className="text-[11px] text-[#94A3B8]">scheduled</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Today
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Today</span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-bold text-[#4338CA]">{stats.todayCount}</span>
-            {stats.todayCount > 0 && (
-              <Badge variant="primary" size="sm" dot>
-                Active
-              </Badge>
-            )}
+            <span className="text-[11px] text-[#94A3B8]">events</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Next 7 Days
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Next 7 Days</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-bold text-[#15803D]">{stats.upcomingWeekCount}</span>
-            <span className="text-xs text-slate-400">upcoming</span>
+            <span className="text-2xl font-bold text-[#0F172A]">{stats.upcomingWeekCount}</span>
+            <span className="text-[11px] text-[#94A3B8]">upcoming</span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-          <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-            Academic / Exams
-          </span>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 shadow-2xs">
+          <span className="text-xs text-[#64748B] font-medium">Academic / Exams</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-bold text-[#B45309]">{stats.academicCount}</span>
-            <span className="text-xs text-slate-400">critical</span>
+            <span className="text-2xl font-bold text-[#0F172A]">{stats.academicCount}</span>
+            <span className="text-[11px] text-[#94A3B8]">sessions</span>
           </div>
         </div>
       </div>

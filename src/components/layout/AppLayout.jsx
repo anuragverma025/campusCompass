@@ -18,8 +18,12 @@ export const AppLayout = () => {
   const location = useLocation();
   const outlet = useOutlet();
 
+  // Reset scroll position to top on every page navigation.
+  // Without this, React Router preserves the scroll offset from the
+  // previous page, causing new pages to appear mid-scroll.
   useEffect(() => {
     setIsSidebarOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [location.pathname]);
 
   useEffect(() => {

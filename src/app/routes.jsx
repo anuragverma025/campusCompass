@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout';
-import PagePlaceholder from '../pages/PagePlaceholder';
 import WelcomePage from '../pages/WelcomePage';
 import NotFoundPage from '../pages/NotFoundPage';
+import DashboardPage from '../pages/DashboardPage';
 import TasksPage from '../features/tasks/TasksPage';
-import PlacementPage from '../pages/PlacementPage';
 import CalendarPage from '../pages/CalendarPage';
 import OpportunitiesPage from '../pages/OpportunitiesPage';
+import PlacementPage from '../pages/PlacementPage';
 
 /**
  * Main application routing configuration.
@@ -17,7 +17,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route index element={<PagePlaceholder title="Dashboard" />} />
+        <Route index element={<DashboardPage />} />
         <Route path="tasks" element={<TasksPage />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route

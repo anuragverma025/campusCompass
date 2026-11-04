@@ -20,28 +20,35 @@ storage.clear();
 
 // ── Test 1: Demo Accounts Structure & Credential Validation ──────────────────
 console.log('Test 1: Demo Accounts & Credential Validation');
-assert.strictEqual(DEMO_ACCOUNTS.length, 3, 'Must have 3 demo accounts');
+assert.strictEqual(DEMO_ACCOUNTS.length, 4, 'Must have 4 demo accounts');
 
 // Valid credentials
-const s1 = validateCredentials('aarav@demo.com', 'student1');
-assert.ok(s1, 'aarav@demo.com should authenticate');
+const s1 = validateCredentials('anurag@demo.com', 'student1');
+assert.ok(s1, 'anurag@demo.com should authenticate');
 assert.strictEqual(s1.id, 'student-1');
-assert.strictEqual(s1.name, 'Aarav Sharma');
+assert.strictEqual(s1.name, 'Anurag Verma');
 
-const s2 = validateCredentials('priya@demo.com', 'student2');
-assert.ok(s2, 'priya@demo.com should authenticate');
+const s2 = validateCredentials('ayush@demo.com', 'student2');
+assert.ok(s2, 'ayush@demo.com should authenticate');
 assert.strictEqual(s2.id, 'student-2');
+assert.strictEqual(s2.name, 'Ayush Kumar');
 
-const s3 = validateCredentials('rohan@demo.com', 'student3');
-assert.ok(s3, 'rohan@demo.com should authenticate');
+const s3 = validateCredentials('ankit@demo.com', 'student3');
+assert.ok(s3, 'ankit@demo.com should authenticate');
 assert.strictEqual(s3.id, 'student-3');
+assert.strictEqual(s3.name, 'Ankit Gupta');
+
+const s4 = validateCredentials('kanhaiya@demo.com', 'student4');
+assert.ok(s4, 'kanhaiya@demo.com should authenticate');
+assert.strictEqual(s4.id, 'student-4');
+assert.strictEqual(s4.name, 'Kanhaiya Mehta');
 
 // Case insensitivity on email
-const s1Upper = validateCredentials('AARAV@DEMO.COM', 'student1');
+const s1Upper = validateCredentials('ANURAG@DEMO.COM', 'student1');
 assert.ok(s1Upper, 'Email matching should be case-insensitive');
 
 // Invalid password
-const badPass = validateCredentials('aarav@demo.com', 'wrongpassword');
+const badPass = validateCredentials('anurag@demo.com', 'wrongpassword');
 assert.strictEqual(badPass, null, 'Wrong password should fail');
 
 // Unknown email
@@ -52,9 +59,10 @@ console.log('  ✔ All demo credentials and edge cases validated.\n');
 
 // ── Test 2: Student Account Lookup ───────────────────────────────────────────
 console.log('Test 2: getAccountById Helper');
-assert.strictEqual(getAccountById('student-1')?.name, 'Aarav Sharma');
-assert.strictEqual(getAccountById('student-2')?.name, 'Priya Mehta');
-assert.strictEqual(getAccountById('student-3')?.name, 'Rohan Verma');
+assert.strictEqual(getAccountById('student-1')?.name, 'Anurag Verma');
+assert.strictEqual(getAccountById('student-2')?.name, 'Ayush Kumar');
+assert.strictEqual(getAccountById('student-3')?.name, 'Ankit Gupta');
+assert.strictEqual(getAccountById('student-4')?.name, 'Kanhaiya Mehta');
 assert.strictEqual(getAccountById('non-existent'), null);
 console.log('  ✔ Account lookup returns expected student metadata.\n');
 
@@ -63,37 +71,41 @@ console.log('Test 3: Storage Isolation Between Students');
 const store1 = studentStorage('student-1');
 const store2 = studentStorage('student-2');
 const store3 = studentStorage('student-3');
+const store4 = studentStorage('student-4');
 
 // Store student 1 tasks
 const s1Tasks = [
-  { id: 'task-1', title: 'Aarav Personal Task', completed: false },
+  { id: 'task-1', title: 'Anurag Personal Task', completed: false },
 ];
 store1.set('campus_compass_tasks', s1Tasks);
 
 // Store student 2 tasks
 const s2Tasks = [
-  { id: 'task-2', title: 'Priya Different Task', completed: true },
+  { id: 'task-2', title: 'Ayush Different Task', completed: true },
 ];
 store2.set('campus_compass_tasks', s2Tasks);
 
 // Assert student 1 only sees their tasks
 const readS1 = store1.get('campus_compass_tasks');
 assert.strictEqual(readS1.length, 1);
-assert.strictEqual(readS1[0].title, 'Aarav Personal Task');
+assert.strictEqual(readS1[0].title, 'Anurag Personal Task');
 
 // Assert student 2 only sees their tasks
 const readS2 = store2.get('campus_compass_tasks');
 assert.strictEqual(readS2.length, 1);
-assert.strictEqual(readS2[0].title, 'Priya Different Task');
+assert.strictEqual(readS2[0].title, 'Ayush Different Task');
 
-// Assert student 3 has no tasks yet (returns default null)
+// Assert student 3 & 4 have no tasks yet (returns default null)
 const readS3 = store3.get('campus_compass_tasks', null);
 assert.strictEqual(readS3, null);
+const readS4 = store4.get('campus_compass_tasks', null);
+assert.strictEqual(readS4, null);
 
 // Underlying raw keys in storage must be namespaced with __student-<id>
 assert.ok(storage.get('campus_compass_tasks__student-1'));
 assert.ok(storage.get('campus_compass_tasks__student-2'));
 assert.strictEqual(storage.get('campus_compass_tasks__student-3', null), null);
+assert.strictEqual(storage.get('campus_compass_tasks__student-4', null), null);
 
 console.log('  ✔ Data namespaces completely isolate student data.\n');
 
@@ -101,8 +113,8 @@ console.log('  ✔ Data namespaces completely isolate student data.\n');
 console.log('Test 4: Cross-Module Multi-Student Data Mutation');
 
 // Calendar events
-store1.set('campusCompass_calendarEvents', [{ id: 'c1', title: 'Exam for Aarav' }]);
-store2.set('campusCompass_calendarEvents', [{ id: 'c2', title: 'Interview for Priya' }]);
+store1.set('campusCompass_calendarEvents', [{ id: 'c1', title: 'Exam for Anurag' }]);
+store2.set('campusCompass_calendarEvents', [{ id: 'c2', title: 'Interview for Ayush' }]);
 
 // Opportunities
 store1.set('campusCompass_opportunities', [{ id: 'o1', title: 'Google Summer Intern' }]);
@@ -118,7 +130,7 @@ store1.set('campusCompass_calendarEvents', []);
 // Verify student 2's event is untouched
 const s2Events = store2.get('campusCompass_calendarEvents');
 assert.strictEqual(s2Events.length, 1);
-assert.strictEqual(s2Events[0].title, 'Interview for Priya');
+assert.strictEqual(s2Events[0].title, 'Interview for Ayush');
 
 // Verify student 1's events are empty
 const s1Events = store1.get('campusCompass_calendarEvents');
@@ -151,9 +163,10 @@ assert.deepStrictEqual(student1MigratedTasks, legacyTasks);
 const student1MigratedPlacement = studentStorage('student-1').get('campusCompass_placementApplications');
 assert.deepStrictEqual(student1MigratedPlacement, legacyPlacement);
 
-// Student 2 and 3 should NOT have received student 1's legacy data
+// Student 2, 3, 4 should NOT have received student 1's legacy data
 assert.strictEqual(studentStorage('student-2').get('campus_compass_tasks', null), null);
 assert.strictEqual(studentStorage('student-3').get('campus_compass_tasks', null), null);
+assert.strictEqual(studentStorage('student-4').get('campus_compass_tasks', null), null);
 
 console.log('  ✔ Legacy data safely migrated to student-1 without bleeding to other accounts.\n');
 
@@ -169,4 +182,3 @@ assert.strictEqual(storage.get(SESSION_KEY, null), null);
 console.log('  ✔ Session login and logout persistence validated.\n');
 
 console.log('🎉 ALL 6 AUTH & MULTI-STUDENT LOGIC TESTS PASSED!\n');
-

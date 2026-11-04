@@ -1,50 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Badge } from '../../../components/ui/Badge';
 import { useAuth } from '../../auth/AuthContext';
-import { studentStorage } from '../../../utils/studentStorage';
-
-const USER_NAME_KEY = 'campus_compass_student_name';
 
 /**
- * WelcomeBanner — Friendly personalizable greeting header for the student dashboard.
- * Uses the logged-in demo student's name and course, while allowing custom overrides.
+ * WelcomeBanner — Friendly personal greeting header for the student dashboard.
+ * Consistently displays the currently authenticated student profile, course, and session.
  */
 export const WelcomeBanner = () => {
   const { student } = useAuth();
-  const store = studentStorage(student?.id);
-  const defaultName = student?.name || '';
-
-  const [name, setName] = useState(defaultName);
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempName, setTempName] = useState(defaultName);
-
-  useEffect(() => {
-    const saved = store.get(USER_NAME_KEY, null);
-    if (typeof saved === 'string' && saved.trim()) {
-      setName(saved);
-      setTempName(saved);
-    } else if (student?.name) {
-      setName(student.name);
-      setTempName(student.name);
-    }
-  }, [student?.id, student?.name]);
-
-  const handleSaveName = (e) => {
-    e?.preventDefault();
-    const clean = tempName.trim();
-    setName(clean || student?.name || '');
-    store.set(USER_NAME_KEY, clean);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSaveName();
-    } else if (e.key === 'Escape') {
-      setTempName(name);
-      setIsEditing(false);
-    }
-  };
+  const displayName = student?.name || 'Student';
 
   // Get current day of week and formatted date
   const now = new Date();
@@ -56,7 +20,7 @@ export const WelcomeBanner = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#4338CA] via-[#3730A3] to-[#1E1B4B] rounded-2xl p-6 sm:p-8 text-white shadow-sm relative overflow-hidden">
-      {/* Decorative background circle */}
+      {/* Decorative background blur */}
       <div
         className="absolute -right-8 -bottom-10 w-48 h-48 bg-white/5 rounded-full pointer-events-none blur-2xl"
         aria-hidden="true"
@@ -77,53 +41,9 @@ export const WelcomeBanner = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              {name ? `Welcome back, ${name}! 👋` : 'Welcome back! 👋'}
-            </h1>
-
-            {!isEditing ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setTempName(name);
-                  setIsEditing(true);
-                }}
-                className="text-xs text-indigo-200 hover:text-white underline decoration-dotted transition-colors ml-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded px-1"
-                title="Personalize your name"
-                aria-label="Edit your preferred name"
-              >
-                {name ? '✎ edit' : '+ set name'}
-              </button>
-            ) : (
-              <form onSubmit={handleSaveName} className="inline-flex items-center gap-1.5 ml-2">
-                <input
-                  type="text"
-                  value={tempName}
-                  onChange={(e) => setTempName(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Your first name"
-                  maxLength={30}
-                  autoFocus
-                  className="bg-white/15 border border-white/30 text-white text-xs px-2.5 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder:text-indigo-200 w-32 sm:w-40"
-                  aria-label="Enter your preferred name"
-                />
-                <button
-                  type="submit"
-                  className="bg-white text-[#4338CA] font-bold text-xs px-2.5 py-1 rounded-lg hover:bg-indigo-50 transition-colors shadow-2xs"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="text-xs text-indigo-200 hover:text-white px-1"
-                >
-                  ✕
-                </button>
-              </form>
-            )}
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Welcome back, {displayName}! 👋
+          </h1>
 
           <p className="text-sm text-indigo-100/90 mt-1.5 max-w-xl leading-relaxed">
             Here is your daily snapshot of assignments, upcoming schedules, saved opportunities, and placement applications.

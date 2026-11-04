@@ -193,17 +193,17 @@ export function TasksPage() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-6" aria-labelledby="tasks-heading">
+    <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6" aria-labelledby="tasks-heading">
       {/* ── Page header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1
             id="tasks-heading"
-            className="text-2xl font-bold text-[#0F172A] tracking-tight"
+            className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight"
           >
             My Tasks
           </h1>
-          <p className="text-sm text-[#64748B] mt-0.5">
+          <p className="text-sm text-[#64748B] mt-1">
             Track assignments, study goals, and deadlines in one place.
           </p>
         </div>

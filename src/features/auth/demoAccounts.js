@@ -13,30 +13,39 @@
 export const DEMO_ACCOUNTS = [
   {
     id: 'student-1',
-    name: 'Aarav Sharma',
-    email: 'aarav@demo.com',
+    name: 'Anurag Verma',
+    email: 'anurag@demo.com',
     password: 'student1',
-    avatar: 'AS',
+    avatar: 'AV',
     course: 'B.Tech CSE — 3rd Year',
-    bio: 'Preparing for SDE roles and internships.',
+    bio: 'Preparing for SDE roles and full-stack development.',
   },
   {
     id: 'student-2',
-    name: 'Priya Mehta',
-    email: 'priya@demo.com',
+    name: 'Ayush Kumar',
+    email: 'ayush@demo.com',
     password: 'student2',
-    avatar: 'PM',
-    course: 'B.Tech IT — 4th Year',
-    bio: 'Focused on data science and placement preparation.',
+    avatar: 'AK',
+    course: 'B.Tech IT — 3rd Year',
+    bio: 'Focused on data structures, algorithms, and internships.',
   },
   {
     id: 'student-3',
-    name: 'Rohan Verma',
-    email: 'rohan@demo.com',
+    name: 'Ankit Gupta',
+    email: 'ankit@demo.com',
     password: 'student3',
-    avatar: 'RV',
-    course: 'B.Tech ECE — 2nd Year',
-    bio: 'Exploring web development and competitive programming.',
+    avatar: 'AG',
+    course: 'B.Tech ECE — 3rd Year',
+    bio: 'Exploring web technologies and competitive programming.',
+  },
+  {
+    id: 'student-4',
+    name: 'Kanhaiya Mehta',
+    email: 'kanhaiya@demo.com',
+    password: 'student4',
+    avatar: 'KM',
+    course: 'B.Tech CSE — 3rd Year',
+    bio: 'Specializing in cloud systems and software engineering.',
   },
 ];
 
@@ -67,4 +76,3 @@ export function validateCredentials(email, password) {
     ) ?? null
   );
 }
-

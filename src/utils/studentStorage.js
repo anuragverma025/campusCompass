@@ -16,7 +16,6 @@ const LEGACY_KEYS = [
   'campusCompass_calendarEvents',
   'campusCompass_opportunities',
   'campusCompass_placementApplications',
-  'campus_compass_student_name',
 ];
 
 /**

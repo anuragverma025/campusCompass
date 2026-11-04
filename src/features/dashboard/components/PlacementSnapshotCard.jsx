@@ -113,7 +113,7 @@ export const PlacementSnapshotCard = ({ applications = [] }) => {
       </div>
 
       <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <span>Recruitment cycle 2026-27</span>
+        <span>Sorted by activity</span>
         <Link to="/placement" className="text-[#4338CA] hover:underline font-medium">
           Manage Placement Tracker
         </Link>

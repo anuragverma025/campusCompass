@@ -65,7 +65,7 @@ export const AppLayout = () => {
           isOpen={isSidebarOpen}
           onNavigate={() => setIsSidebarOpen(false)}
         />
-        <main id="main-content" className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <main id="main-content" className="min-w-0 flex-1">
           <a
             href="#page-content"
             className="sr-only rounded-md bg-white px-3 py-2 text-sm text-[#4338CA] focus:not-sr-only focus:absolute focus:left-4 focus:top-20 focus:z-50"

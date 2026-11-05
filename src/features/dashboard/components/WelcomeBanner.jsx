@@ -29,11 +29,6 @@ export const WelcomeBanner = () => {
           Here is your summary of upcoming assignments, scheduled events, opportunities, and placement applications.
         </p>
       </div>
-
-      <div className="text-xs text-[#64748B] shrink-0 sm:text-right">
-        <span className="block text-[#94A3B8] text-[11px] uppercase tracking-wider font-semibold">Active Profile</span>
-        <span className="font-medium text-[#0F172A]">{student?.email || 'Demo Session'}</span>
-      </div>
     </div>
   );
 };

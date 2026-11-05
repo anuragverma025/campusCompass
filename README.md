@@ -6,9 +6,9 @@
 [![React Router](https://img.shields.io/badge/React_Router-v6-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![QA Smoke Tests](https://img.shields.io/badge/QA_Smoke_Tests-Passing-15803D)](scripts/qa-check.mjs)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/anuragverma025/campusCompass)
+[![Website](https://img.shields.io/badge/Website-http%3A%2F%2Flocalhost%3A3000-4338CA?logo=googlechrome&logoColor=white)](http://localhost:3000)
 
-🔗 **GitHub Repository URL:** [https://github.com/anuragverma025/campusCompass](https://github.com/anuragverma025/campusCompass)
+🌐 **Website URL:** [http://localhost:3000](http://localhost:3000)
 
 **Campus Compass** is an open-source, frontend-first student productivity web application designed to help college students streamline academic commitments, daily schedules, career opportunities, and placement preparation within a single unified workspace.
 

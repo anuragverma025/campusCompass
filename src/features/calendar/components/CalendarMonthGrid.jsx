@@ -174,7 +174,7 @@ export const CalendarMonthGrid = ({ events = [], selectedDate, onSelectDate }) =
               `}
               aria-label={`${cell.dateStr}: ${hasEvents ? `${cell.events.length} event(s)` : 'no events'}`}
             >
-              <div className="flex items-center justify-between w-full px-1">
+              <div className="flex items-center w-full px-1">
                 <span
                   className={`text-xs inline-flex items-center justify-center w-5 h-5 rounded-full
                     ${isToday && !isSelected ? 'bg-[#4338CA] text-white font-bold' : ''}
@@ -183,15 +183,16 @@ export const CalendarMonthGrid = ({ events = [], selectedDate, onSelectDate }) =
                 >
                   {cell.day}
                 </span>
-                {hasEvents && (
-                  <span className="text-[10px] font-bold text-slate-500 hidden sm:inline">
-                    {cell.events.length}
-                  </span>
-                )}
+
+
+
+
+
               </div>
 
               {/* Event category indicator dots */}
-              <div className="flex items-center gap-1 px-1 overflow-hidden w-full pb-0.5">
+              <div className="flex items-center justify-between w-full px-1 pb-0.5">
+                <div className="flex items-center gap-1 overflow-hidden">
                 {hasEvents &&
                   cell.events.slice(0, 3).map((evt, eIdx) => {
                     const dotColors = {
@@ -208,9 +209,18 @@ export const CalendarMonthGrid = ({ events = [], selectedDate, onSelectDate }) =
                       />
                     );
                   })}
-                {cell.events?.length > 3 && (
-                  <span className="text-[9px] text-slate-400 font-semibold leading-none">+</span>
+                  {cell.events?.length > 3 && (
+                    <span className="text-[9px] text-slate-400 font-semibold leading-none">+</span>
+                  )}
+                </div>
+
+                {hasEvents && (
+                  <span className="text-[10px] font-medium text-slate-400 leading-none">
+                    {cell.events.length}
+                  </span>
                 )}
+
+
               </div>
             </button>
           );

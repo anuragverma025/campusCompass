@@ -15,6 +15,7 @@ import {
  *   isLoggedIn — boolean convenience flag
  *   login(email, password) — returns { ok: true } or { ok: false, error: string }
  *   logout()   — clears the session and returns to the login page
+ *   updateProfile(data) — updates active student details and persists to storage
  */
 const AuthContext = createContext(null);
 
@@ -28,7 +29,11 @@ export function AuthProvider({ children }) {
   const [student, setStudent] = useState(() => {
     const savedId = storage.get(SESSION_KEY, null);
     if (typeof savedId === 'string') {
-      return getAccountById(savedId);
+      const base = getAccountById(savedId);
+      if (base) {
+        const custom = storage.get(`campusCompass_student_profile_${savedId}`, null);
+        return custom ? { ...base, ...custom } : base;
+      }
     }
     return null;
   });
@@ -39,7 +44,8 @@ export function AuthProvider({ children }) {
       return { ok: false, error: 'Invalid email or password. Check the demo credentials below.' };
     }
     storage.set(SESSION_KEY, account.id);
-    setStudent(account);
+    const custom = storage.get(`campusCompass_student_profile_${account.id}`, null);
+    setStudent(custom ? { ...account, ...custom } : account);
     return { ok: true };
   }, []);
 
@@ -48,9 +54,18 @@ export function AuthProvider({ children }) {
     setStudent(null);
   }, []);
 
+  const updateProfile = useCallback((updatedFields) => {
+    setStudent((prev) => {
+      if (!prev) return null;
+      const updated = { ...prev, ...updatedFields };
+      storage.set(`campusCompass_student_profile_${prev.id}`, updated);
+      return updated;
+    });
+  }, []);
+
   const value = useMemo(
-    () => ({ student, isLoggedIn: student !== null, login, logout }),
-    [student, login, logout],
+    () => ({ student, isLoggedIn: student !== null, login, logout, updateProfile }),
+    [student, login, logout, updateProfile],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

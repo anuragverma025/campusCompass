@@ -1,6 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../features/auth/AuthContext';
+import { NavLink } from 'react-router-dom';
 
 const navigationItems = [
   {
@@ -58,15 +57,6 @@ const navigationItems = [
 ];
 
 export const Sidebar = ({ isOpen, onNavigate }) => {
-  const { student, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    onNavigate?.();
-    navigate('/login', { replace: true });
-  };
-
   return (
     <aside
       id="app-sidebar"
@@ -130,36 +120,6 @@ export const Sidebar = ({ isOpen, onNavigate }) => {
           ))}
         </ul>
       </nav>
-
-      {/* Demo Student Account Footer */}
-      <div className="mt-auto pt-4 border-t border-[#E2E8F0]">
-        <div className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl bg-slate-50 border border-slate-100">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EEF2FF] text-xs font-bold text-[#4338CA]">
-              {student?.avatar || 'S'}
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-[#0F172A] truncate">
-                {student?.name || 'Demo Student'}
-              </p>
-              <p className="text-[11px] text-[#64748B] truncate">
-                {student?.email || 'Logged in'}
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleLogout}
-            title="Sign out"
-            className="p-1.5 text-[#64748B] hover:text-[#B91C1C] hover:bg-white rounded-lg transition-colors shrink-0"
-            aria-label="Sign out"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-            </svg>
-          </button>
-        </div>
-      </div>
     </aside>
   );
 };

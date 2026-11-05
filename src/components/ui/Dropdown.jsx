@@ -17,6 +17,7 @@ export const Dropdown = ({
   children,
   align = 'left',
   className = '',
+  containerClassName = '',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -51,14 +52,14 @@ export const Dropdown = ({
     align === 'right' ? 'right-0 origin-top-right' : 'left-0 origin-top-left';
 
   return (
-    <div ref={dropdownRef} className="relative inline-block text-left">
+    <div ref={dropdownRef} className={`relative ${containerClassName || 'inline-block'} text-left`}>
       {/* Trigger */}
       <div
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-controls={menuId}
-        className="inline-flex cursor-pointer"
+        className={`cursor-pointer ${containerClassName?.includes('w-full') ? 'w-full block' : 'inline-flex'}`}
       >
         {trigger}
       </div>

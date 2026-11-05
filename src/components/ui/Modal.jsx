@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useId } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * Reusable Modal / Dialog component for Campus Compass design system.
  * Accessible dialog with backdrop blur, focus handling, and Escape key dismissal.
+ * Teleported to document.body via React Portal to prevent CSS stacking context clipping.
  * 
  * @param {Object} props
  * @param {boolean} props.isOpen - Whether modal is visible
@@ -76,7 +78,7 @@ export const Modal = ({
     }
   };
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
       onClick={handleOverlayClick}
@@ -142,6 +144,12 @@ export const Modal = ({
       </div>
     </div>
   );
+
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+
+  return modalContent;
 };
 
 export default Modal;
